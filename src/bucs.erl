@@ -9,6 +9,7 @@
   to_float/1,
   module_exist/1,
   function_exist/3,
+  apply/3,
   is_string/1,
   compare_as_list/2,
   compare_as_string/2,
@@ -168,6 +169,16 @@ function_exist(Module, Function, Arity) ->
       erlang:function_exported(Module, Function, Arity);
     _ -> 
       false
+  end.
+
+% @doc
+% @end
+apply(Module, Function, Args) ->
+  try 
+    {ok, erlang:apply(Module, Function, Args)}
+  catch 
+    _:_ ->
+      error
   end.
 
 % @doc
