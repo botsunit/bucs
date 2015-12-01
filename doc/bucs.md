@@ -9,14 +9,15 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td>
+Check if the given function exist.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
 Check if the given value is a string.</td></tr><tr><td valign="top"><a href="#module_exist-1">module_exist/1</a></td><td>
 Check if the given module exist.</td></tr><tr><td valign="top"><a href="#pipecall-1">pipecall/1</a></td><td> 
-Pipe fun call.</td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td>
-Convert the given term to atom.</td></tr><tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td>
-Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td>
-Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td>
-Convert the given term to integer.</td></tr><tr><td valign="top"><a href="#to_list-1">to_list/1</a></td><td>
+Pipe fun call.</td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td> 
+Convert the given term to atom.</td></tr><tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td> 
+Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td> 
+Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td> 
+Convert the given term to integer.</td></tr><tr><td valign="top"><a href="#to_list-1">to_list/1</a></td><td> 
 Convert the given term to list.</td></tr><tr><td valign="top"><a href="#to_string-1">to_string/1</a></td><td>
 Convert the given term to string.</td></tr></table>
 
@@ -54,6 +55,14 @@ Convert the given term to string.</td></tr></table>
 ### compare_as_string/2 ###
 
 `compare_as_string(V1, V2) -> any()`
+
+<a name="function_exist-3"></a>
+
+### function_exist/3 ###
+
+`function_exist(Module, Function, Arity) -> any()`
+
+Check if the given function exist
 
 <a name="is_string-1"></a>
 
@@ -104,15 +113,16 @@ Example:
 
 `to_atom(X) -> any()`
 
+
 Convert the given term to atom
 
 Example:
 
 ```
 
-  atom = bucs:to_atom(atom).
-  atom = bucs:to_atom(<<"atom">>).
-  atom = bucs:to_atom("atom").
+ atom = bucs:to_atom(atom).
+ atom = bucs:to_atom(<<"atom">>).
+ atom = bucs:to_atom("atom").
 ```
 
 <a name="to_binary-1"></a>
@@ -120,6 +130,7 @@ Example:
 ### to_binary/1 ###
 
 `to_binary(V) -> any()`
+
 
 Convert the given term to binary
 
@@ -135,17 +146,18 @@ Example:
 
 `to_float(Value) -> any()`
 
+
 Convert the given term to float
 
 Example
 
 ```
 
-  123.45 = bucs:to_float(123.45).
-  123.45 = bucs:to_float("123.45").
-  123.45 = bucs:to_float(<<"123.45">>).
-  123.45 = bucs:to_float('123.45').
-  123.0 = bucs:to_float(123).
+ 123.45 = bucs:to_float(123.45).
+ 123.45 = bucs:to_float("123.45").
+ 123.45 = bucs:to_float(<<"123.45">>).
+ 123.45 = bucs:to_float('123.45').
+ 123.0 = bucs:to_float(123).
 ```
 
 <a name="to_integer-1"></a>
@@ -154,17 +166,18 @@ Example
 
 `to_integer(I) -> any()`
 
+
 Convert the given term to integer
 
 Example
 
 ```
 
-  123 = bucs:to_integer(123).
-  123 = bucs:to_integer("123").
-  123 = bucs:to_integer(<<"123">>).
-  123 = bucs:to_integer('123').
-  123 = bucs:to_integer(123.456).
+ 123 = bucs:to_integer(123).
+ 123 = bucs:to_integer("123").
+ 123 = bucs:to_integer(<<"123">>).
+ 123 = bucs:to_integer('123').
+ 123 = bucs:to_integer(123.456).
 ```
 
 <a name="to_list-1"></a>
@@ -173,19 +186,20 @@ Example
 
 `to_list(V) -> any()`
 
+
 Convert the given term to list
 
 Example:
 
 ```
 
-  "list" = bucs:to_list(list).
-  "list" = bucs:to_list("list").
-  "list" = bucs:to_list(<<"list">>).
-  "123" = bucs:to_list(123).
-  "1.20000000000000000000e+01" = bucs:to_list(12.0).
-  "true" = bucs:to_list(true).
-  "false" = bucs:to_list(false).
+ "list" = bucs:to_list(list).
+ "list" = bucs:to_list("list").
+ "list" = bucs:to_list(<<"list">>).
+ "123" = bucs:to_list(123).
+ "1.20000000000000000000e+01" = bucs:to_list(12.0).
+ "true" = bucs:to_list(true).
+ "false" = bucs:to_list(false).
 ```
 
 <a name="to_string-1"></a>

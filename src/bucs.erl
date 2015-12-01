@@ -8,6 +8,7 @@
   to_integer/1,
   to_float/1,
   module_exist/1,
+  function_exist/3,
   is_string/1,
   compare_as_list/2,
   compare_as_string/2,
@@ -17,16 +18,16 @@
   pipecall/1
   ]).
 
-%% @doc
-%% Convert the given term to atom
-%%
-%% Example:
-%% <pre>
-%% atom = bucs:to_atom(atom).
-%% atom = bucs:to_atom(&lt;&lt;"atom"&gt;&gt;).
-%% atom = bucs:to_atom("atom").
-%% </pre>
-%% @end
+% @doc
+% Convert the given term to atom
+%
+% Example:
+% <pre>
+% atom = bucs:to_atom(atom).
+% atom = bucs:to_atom(&lt;&lt;"atom"&gt;&gt;).
+% atom = bucs:to_atom("atom").
+% </pre>
+% @end
 to_atom(X) when is_atom(X) ->
   X;
 to_atom(X) when is_binary(X); is_bitstring(X) ->
@@ -36,20 +37,20 @@ to_atom(X) when is_list(X) ->
 to_atom(X) ->
   to_atom(to_list(X)).
 
-%% @doc
-%% Convert the given term to list
-%%
-%% Example:
-%% <pre>
-%% "list" = bucs:to_list(list).
-%% "list" = bucs:to_list("list").
-%% "list" = bucs:to_list(&lt;&lt;"list"&gt;&gt;).
-%% "123" = bucs:to_list(123).
-%% "1.20000000000000000000e+01" = bucs:to_list(12.0).
-%% "true" = bucs:to_list(true).
-%% "false" = bucs:to_list(false).
-%% </pre>
-%% @end
+% @doc
+% Convert the given term to list
+%
+% Example:
+% <pre>
+% "list" = bucs:to_list(list).
+% "list" = bucs:to_list("list").
+% "list" = bucs:to_list(&lt;&lt;"list"&gt;&gt;).
+% "123" = bucs:to_list(123).
+% "1.20000000000000000000e+01" = bucs:to_list(12.0).
+% "true" = bucs:to_list(true).
+% "false" = bucs:to_list(false).
+% </pre>
+% @end
 to_list(V) when is_atom(V) ->
   atom_to_list(V);
 to_list(V) when is_list(V) ->
@@ -67,43 +68,43 @@ to_list(true) ->
 to_list(false) ->
   "false".
 
-%% @doc
-%% Convert the given term to string
-%% @end
+% @doc
+% Convert the given term to string
+% @end
 to_string(V) ->
   lists:flatten(to_list(V)).
 
-%% @doc
-%% Convert the given term to binary
-%%
-%% Example:
-%% <pre>
-%% &lt;&lt;"list"&gt;&gt; = bucs:to_binary(list).
-%% &lt;&lt;"list"&gt;&gt; = bucs:to_binary("list").
-%% &lt;&lt;"list"&gt;&gt; = bucs:to_binary(&lt;&lt;"list"&gt;&gt;).
-%% &lt;&lt;"123"&gt;&gt; = bucs:to_binary(123).
-%% &lt;&lt;"1.20000000000000000000e+01"&gt;&gt; = bucs:to_binary(12.0).
-%% &lt;&lt;"true"&gt;&gt; = bucs:to_binary(true).
-%% &lt;&lt;"false"&gt;&gt; = bucs:to_binary(false).
-%% </pre>
-%% @end
+% @doc
+% Convert the given term to binary
+%
+% Example:
+% <pre>
+% &lt;&lt;"list"&gt;&gt; = bucs:to_binary(list).
+% &lt;&lt;"list"&gt;&gt; = bucs:to_binary("list").
+% &lt;&lt;"list"&gt;&gt; = bucs:to_binary(&lt;&lt;"list"&gt;&gt;).
+% &lt;&lt;"123"&gt;&gt; = bucs:to_binary(123).
+% &lt;&lt;"1.20000000000000000000e+01"&gt;&gt; = bucs:to_binary(12.0).
+% &lt;&lt;"true"&gt;&gt; = bucs:to_binary(true).
+% &lt;&lt;"false"&gt;&gt; = bucs:to_binary(false).
+% </pre>
+% @end
 to_binary(V) when is_binary(V); is_bitstring(V) ->
   V;
 to_binary(V) ->
   iolist_to_binary(to_list(V)).
 
-%% @doc
-%% Convert the given term to integer
-%%
-%% Example
-%%<pre>
-%% 123 = bucs:to_integer(123).
-%% 123 = bucs:to_integer("123").
-%% 123 = bucs:to_integer(&lt;&lt;"123"&gt;&gt;).
-%% 123 = bucs:to_integer('123').
-%% 123 = bucs:to_integer(123.456).
-%% </pre>
-%% @end
+% @doc
+% Convert the given term to integer
+%
+% Example
+%<pre>
+% 123 = bucs:to_integer(123).
+% 123 = bucs:to_integer("123").
+% 123 = bucs:to_integer(&lt;&lt;"123"&gt;&gt;).
+% 123 = bucs:to_integer('123').
+% 123 = bucs:to_integer(123.456).
+% </pre>
+% @end
 to_integer(I) when is_integer(I) ->
   I;
 to_integer(I) when is_list(I) ->
@@ -115,18 +116,18 @@ to_integer(I) when is_atom(I) ->
 to_integer(I) when is_float(I) ->
   to_integer(float_to_list(I, [{decimals, 0}])).
 
-%% @doc
-%% Convert the given term to float
-%%
-%% Example
-%%<pre>
-%% 123.45 = bucs:to_float(123.45).
-%% 123.45 = bucs:to_float("123.45").
-%% 123.45 = bucs:to_float(&lt;&lt;"123.45"&gt;&gt;).
-%% 123.45 = bucs:to_float('123.45').
-%% 123.0 = bucs:to_float(123).
-%% </pre>
-%% @end
+% @doc
+% Convert the given term to float
+%
+% Example
+%<pre>
+% 123.45 = bucs:to_float(123.45).
+% 123.45 = bucs:to_float("123.45").
+% 123.45 = bucs:to_float(&lt;&lt;"123.45"&gt;&gt;).
+% 123.45 = bucs:to_float('123.45').
+% 123.0 = bucs:to_float(123).
+% </pre>
+% @end
 to_float(Value) when is_integer(Value) ->
   float(Value);
 to_float(Value) when is_float(Value) ->
@@ -141,9 +142,9 @@ to_float(Value) when is_binary(Value) ->
 to_float(Value) when is_atom(Value) ->
   to_float(atom_to_list(Value)).
 
-%% @doc
-%% Check if the given module exist
-%% @end
+% @doc
+% Check if the given module exist
+% @end
 module_exist(Module) ->
   case is_atom(Module) of
     true ->
@@ -158,9 +159,20 @@ module_exist(Module) ->
       false
   end.
 
-%% @doc
-%% Check if the given value is a string
-%% @end
+% @doc
+% Check if the given function exist
+% @end
+function_exist(Module, Function, Arity) ->
+  case code:ensure_loaded(Module) of
+    {module, Module} ->
+      erlang:function_exported(Module, Function, Arity);
+    _ -> 
+      false
+  end.
+
+% @doc
+% Check if the given value is a string
+% @end
 is_string(V) when is_list(V) ->
   io_lib:printable_list(V) orelse io_lib:printable_latin1_list(V) orelse io_lib:printable_unicode_list(V);
 is_string(_) -> false.
