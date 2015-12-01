@@ -43,5 +43,23 @@ t_convert() ->
   ?assertEqual(123.45, bucs:to_float("123.45")),
   ?assertEqual(123.45, bucs:to_float(<<"123.45">>)),
   ?assertEqual(123.45, bucs:to_float('123.45')),
-  ?assertEqual(123.0, bucs:to_float(123)).
+  ?assertEqual(123.0, bucs:to_float(123)),
+  ?assertEqual(bucs:to_binary(
+                 bucs:to_list(
+                   bucs:to_atom(123.0))), 
+               bucs:pipecall([
+                              {fun bucs:to_atom/1, [123.0]},
+                              fun bucs:to_list/1,
+                              fun bucs:to_binary/1
+                             ])),
+  ?assertEqual(addition(multiplication(math:log(math:pow(7, 3)), 7), 7),
+               bucs:pipecall([
+                              {fun math:pow/2, [7, 3]},
+                              fun math:log/1,
+                              {fun multiplication/2, [7]},
+                              {fun addition/2, [7]}
+                             ])).
+
+addition(A, B) -> A + B.
+multiplication(A, B) -> A * B.
 

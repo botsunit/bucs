@@ -13,7 +13,8 @@
   compare_as_string/2,
   compare_as_atom/2,
   compare_as_integer/2,
-  compare_as_binary/2
+  compare_as_binary/2,
+  pipecall/1
   ]).
 
 %% @doc
@@ -31,7 +32,9 @@ to_atom(X) when is_atom(X) ->
 to_atom(X) when is_binary(X); is_bitstring(X) ->
   binary_to_atom(X, utf8);
 to_atom(X) when is_list(X) ->
-  list_to_atom(X).
+  list_to_atom(X);
+to_atom(X) ->
+  to_atom(to_list(X)).
 
 %% @doc
 %% Convert the given term to list
@@ -181,3 +184,35 @@ compare_as(Fun, V1, V2) ->
     V11 =:= V21 -> 0;
     true -> 1
   end.
+
+% @doc
+% Pipe fun call
+%
+% Example:
+% <pre>
+% Add = math:pow(7, 3),
+% Log = math:log(Add),
+% Mul = multiplication(Log, 7),
+% Res = addition(Mul, 7).
+% 
+% % With bucs:pipecall/2 :
+% Res = bucs:pipecall([
+%                      {fun math:pow/2, [7, 3]},
+%                      fun math:log/1,
+%                      {fun multiplication/2, [7]},
+%                      {fun addition/2, [7]}
+%                     ])).
+% </pre>
+% @end
+pipecall([{Call, Args}|Rest]) ->
+  pipecall(Rest, erlang:apply(Call, Args));
+pipecall([Call|Rest]) ->
+  pipecall(Rest, erlang:apply(Call, [])).
+
+pipecall([], Out) ->
+  Out;
+pipecall([{Call, Args}|Rest], Out) ->
+  pipecall(Rest, erlang:apply(Call, [Out|Args]));
+pipecall([Call|Rest], Out) ->
+  pipecall([{Call, []}|Rest], Out).
+

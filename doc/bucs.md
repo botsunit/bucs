@@ -11,7 +11,8 @@
 
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
 Check if the given value is a string.</td></tr><tr><td valign="top"><a href="#module_exist-1">module_exist/1</a></td><td>
-Check if the given module exist.</td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td>
+Check if the given module exist.</td></tr><tr><td valign="top"><a href="#pipecall-1">pipecall/1</a></td><td> 
+Pipe fun call.</td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td>
 Convert the given term to atom.</td></tr><tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td>
 Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td>
 Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td>
@@ -69,6 +70,33 @@ Check if the given value is a string
 `module_exist(Module) -> any()`
 
 Check if the given module exist
+
+<a name="pipecall-1"></a>
+
+### pipecall/1 ###
+
+`pipecall(Rest) -> any()`
+
+
+Pipe fun call
+
+Example:
+
+```
+
+ Add = math:pow(7, 3),
+ Log = math:log(Add),
+ Mul = multiplication(Log, 7),
+ Res = addition(Mul, 7).
+
+ % With bucs:pipecall/2 :
+ Res = bucs:pipecall([
+                      {fun math:pow/2, [7, 3]},
+                      fun math:log/1,
+                      {fun multiplication/2, [7]},
+                      {fun addition/2, [7]}
+                     ])).
+```
 
 <a name="to_atom-1"></a>
 
