@@ -16,7 +16,8 @@
   compare_as_atom/2,
   compare_as_integer/2,
   compare_as_binary/2,
-  pipecall/1
+  pipecall/1,
+  match/2
   ]).
 
 % @doc
@@ -187,6 +188,15 @@ apply(Module, Function, Args) ->
 is_string(V) when is_list(V) ->
   io_lib:printable_list(V) orelse io_lib:printable_latin1_list(V) orelse io_lib:printable_unicode_list(V);
 is_string(_) -> false.
+
+% @doc
+% Return true if <tt>A</tt> match <tt>B</tt>. false otherwise.
+% @end
+match(A, B) ->
+  case A of
+    B -> true;
+    _ -> false
+  end.
 
 compare_as_list(V1, V2) ->
   compare_as(fun to_list/1, V1, V2).

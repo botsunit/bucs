@@ -30,6 +30,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <table width="100%" border="0" summary="list of modules">
 <tr><td><a href="bucbinary.md" class="module">bucbinary</a></td></tr>
 <tr><td><a href="buccode.md" class="module">buccode</a></td></tr>
+<tr><td><a href="bucinet.md" class="module">bucinet</a></td></tr>
 <tr><td><a href="buclists.md" class="module">buclists</a></td></tr>
 <tr><td><a href="bucs.md" class="module">bucs</a></td></tr>
 <tr><td><a href="buctimer.md" class="module">buctimer</a></td></tr></table>
