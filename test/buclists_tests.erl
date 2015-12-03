@@ -8,6 +8,7 @@ buclists_test_() ->
    [
     ?_test(t_pipemap())
     , ?_test(t_keyfind())
+    , ?_test(t_delete_if())
    ]}.
 
 setup() ->
@@ -24,3 +25,9 @@ t_pipemap() ->
 t_keyfind() ->
   ?assertEqual(value, buclists:keyfind(key, 1, [{key, value}], undefined)),
   ?assertEqual(undefined, buclists:keyfind(missing_key, 1, [{key, value}], undefined)).
+
+t_delete_if() ->
+  ?assertEqual([1,2,3], buclists:delete_if(fun(E) ->
+                                               E > 3
+                                           end, [1,2,3,4,5])).
+

@@ -1,24 +1,24 @@
 -module(bucs).
 
 -export([
-  to_atom/1,
-  to_list/1,
-  to_string/1,
-  to_binary/1,
-  to_integer/1,
-  to_float/1,
-  module_exist/1,
-  function_exist/3,
-  apply/3,
-  is_string/1,
-  compare_as_list/2,
-  compare_as_string/2,
-  compare_as_atom/2,
-  compare_as_integer/2,
-  compare_as_binary/2,
-  pipecall/1,
-  match/2
-  ]).
+         to_atom/1,
+         to_list/1,
+         to_string/1,
+         to_binary/1,
+         to_integer/1,
+         to_float/1,
+         module_exist/1,
+         function_exist/3,
+         apply/3,
+         is_string/1,
+         compare_as_list/2,
+         compare_as_string/2,
+         compare_as_atom/2,
+         compare_as_integer/2,
+         compare_as_binary/2,
+         pipecall/1,
+         match/2
+        ]).
 
 % @doc
 % Convert the given term to atom

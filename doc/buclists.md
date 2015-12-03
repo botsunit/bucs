@@ -9,12 +9,18 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#pipemap-2">pipemap/2</a></td><td></td></tr></table>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete_if-2">delete_if/2</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#pipemap-2">pipemap/2</a></td><td></td></tr></table>
 
 
 <a name="functions"></a>
 
 ## Function Details ##
+
+<a name="delete_if-2"></a>
+
+### delete_if/2 ###
+
+`delete_if(Fun, List) -> any()`
 
 <a name="keyfind-4"></a>
 

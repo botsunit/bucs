@@ -2,7 +2,8 @@
 
 -export([
          pipemap/2,
-         keyfind/4
+         keyfind/4,
+         delete_if/2
         ]).
 
 % @doc
@@ -27,4 +28,16 @@ keyfind(Key, N, TupleList, Default) ->
     {Key, Value} -> Value;
     false -> Default
   end.
+
+%% @doc
+%% @end
+delete_if(Fun, List) ->
+  lists:reverse(lists:foldl(fun(E, Acc) ->
+                                case Fun(E) of
+                                  true -> Acc;
+                                  false -> [E|Acc]
+                                end
+                            end,
+                            [],
+                            List)).
 
