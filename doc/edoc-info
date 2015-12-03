@@ -1,4 +1,4 @@
 %% encoding: UTF-8
 {application,bucs}.
-{modules,[bucbinary,buccode,bucfile,bucinet,buclists,bucos,bucs,buctimer,
-          bucuri]}.
+{modules,[bucbinary,buccode,bucdate,bucfile,bucinet,buclists,bucos,bucs,
+          buctimer,bucuri]}.

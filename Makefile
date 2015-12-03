@@ -7,6 +7,8 @@ dep_edown = git https://github.com/botsunit/edown.git master
 
 include erlang.mk
 
+CFLAGS += -D_BSD_SOURCE
+
 EDOC_OPTS = {doclet, edown_doclet} \
 						, {app_default, "http://www.erlang.org/doc/man"} \
 						, {source_path, ["src"]} \
