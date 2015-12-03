@@ -13,12 +13,12 @@ join(A, B) ->
 % Joins a list of URI paths with URI separator.
 % @end
 -spec join(list()) -> string().
-join(URIs) when is_list(URIs) ->  
+join(URIs) when is_list(URIs) ->
   join(URIs, [], true).
 
 join([], Acc, String) ->
   URI = string:join(Acc, "/"),
-  if  
+  if
     String == true -> URI;
     true -> list_to_binary(URI)
   end;

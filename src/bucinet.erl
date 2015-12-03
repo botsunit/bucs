@@ -21,7 +21,7 @@ to_ip(IP) when is_list(IP) ->
       [A, B, C, D] when A >= 0, A =< 255,
                         B >= 0, B =< 255,
                         C >= 0, C =< 255,
-                        D >= 0, D =< 255 -> 
+                        D >= 0, D =< 255 ->
         {A, B, C, D};
       _ -> error
     end
@@ -39,7 +39,7 @@ to_ip(_) ->
 ip_to_string({A, B, C, D}) when A >= 0, A =< 255,
                                 B >= 0, B =< 255,
                                 C >= 0, C =< 255,
-                                D >= 0, D =< 255 -> 
+                                D >= 0, D =< 255 ->
   lists:flatten(io_lib:format("~B.~B.~B.~B", [A, B, C, D]));
 ip_to_string(_) ->
   error.

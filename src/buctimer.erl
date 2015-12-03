@@ -24,7 +24,7 @@ verify({_, _, _, _, _, _} = Spec) ->
   validate(Check).
 
 % @doc
-% Return the next datetime from now. 
+% Return the next datetime from now.
 % @end
 -spec next(timer_spec()) -> {ok, calendar:datetime(), calendar:second()} | {error, term()} | stop.
 next(Spec) ->
@@ -39,26 +39,26 @@ next(Spec, {{Y, M, D}, {HH, MM, SS}}) ->
 next({_, _, _, _, _, _} = Spec,
      {DTY, DTM, DTD, DTHH, DTMM, DTSS} = From) ->
   case verify(Spec) of
-    ok -> 
+    ok ->
       FromAsDT = {{DTY, DTM, DTD}, {DTHH, DTMM, DTSS}},
       Assoc = lists:zip3(units(), bucs:to_list(Spec), bucs:to_list(From)),
       case lists:keyfind(year, 1, Assoc) of
-        {year, _, _} = X -> 
+        {year, _, _} = X ->
           Years = find_next(X),
           case lists:keyfind(month, 1, Assoc) of
-            {month, _, _} = X1 -> 
+            {month, _, _} = X1 ->
               Months = find_next(X1),
               case lists:keyfind(day, 1, Assoc) of
-                {day, _, _} = X2 -> 
+                {day, _, _} = X2 ->
                   Days = find_next(X2),
                   case lists:keyfind(hour, 1, Assoc) of
-                    {hour, _, _} = X3 -> 
+                    {hour, _, _} = X3 ->
                       Hours= find_next(X3),
                       case lists:keyfind(minute, 1, Assoc) of
-                        {minute, _, _} = X4 -> 
+                        {minute, _, _} = X4 ->
                           Minutes = find_next(X4),
                           case lists:keyfind(second, 1, Assoc) of
-                            {second, _, _} = X5 -> 
+                            {second, _, _} = X5 ->
                               Seconds = find_next(X5),
                               Dates = real_dates([{Y, M, D} || Y <- Years,
                                                                M <- Months,
@@ -68,15 +68,15 @@ next({_, _, _, _, _, _} = Spec,
                                                        SS <- Seconds],
                               MinGap = min_gap(Spec),
                               case lists:foldl(fun(DateTime, Result) ->
-                                                       get_date(MinGap, DateTime, FromAsDT, Result) 
-                                                   end, 
-                                               undefined, 
+                                                       get_date(MinGap, DateTime, FromAsDT, Result)
+                                                   end,
+                                               undefined,
                                                [{Date, Time} || Date <- Dates, Time <- Times]) of
                                 undefined -> stop;
                                 Result ->
-                                  {ok, 
-                                   Result, 
-                                   calendar:datetime_to_gregorian_seconds(Result) - 
+                                  {ok,
+                                   Result,
+                                   calendar:datetime_to_gregorian_seconds(Result) -
                                    calendar:datetime_to_gregorian_seconds(FromAsDT)}
                               end;
                             _ -> {error, second}
@@ -120,13 +120,13 @@ validate([{day, sunday}|Rest]) -> validate(Rest);
 validate([{hour, H}|Rest]) when is_integer(H), H >= 0,  H =< 23 -> validate(Rest);
 validate([{minute, M}|Rest]) when is_integer(M), M >= 0,  M =< 59 -> validate(Rest);
 validate([{second, S}|Rest]) when is_integer(S), S >= 0,  S =< 59 -> validate(Rest);
-validate([{Type, Value}|Rest]) when is_atom(Value) -> 
+validate([{Type, Value}|Rest]) when is_atom(Value) ->
   case binary:split(bucs:to_binary(Value), <<"/">>) of
     [<<"*">>] -> validate(Rest);
     [<<"*">>, Data] ->
       try bucs:to_integer(Data) of
         _ -> validate(Rest)
-      catch 
+      catch
         _:_ -> {error, Type}
       end;
     _ -> {error, Type}
@@ -163,7 +163,7 @@ find_next({T, X, Y}) when is_atom(X) ->
   lists:usort(first_type(T, N) ++ next_type(T, N, [Y + (I * N) || I <- lists:seq(0, 2)]));
 find_next({_, LX, _}) when is_list(LX) ->
   LX;
-find_next({_, X, _}) when is_integer(X)-> 
+find_next({_, X, _}) when is_integer(X)->
   [X].
 
 next_type(year, 1, L) -> L;
@@ -195,14 +195,14 @@ real_dates([{_, _, Day} = Date |Rest], Result) when is_integer(Day) ->
   real_dates(Rest, [Date|Result]);
 real_dates([{Year, Month, Day}|Rest], Result) when is_atom(Day) ->
   real_dates(Rest, real_dates(Year, Month, Day) ++ Result).
-  
+
 real_dates(Year, Month, Day) ->
   FirstDayOfWeekForMonth = calendar:day_of_the_week(Year, Month, 1),
   WantedDay = day(Day),
   FirstWantedDay = if
-                     FirstDayOfWeekForMonth =< WantedDay -> 
+                     FirstDayOfWeekForMonth =< WantedDay ->
                        WantedDay - FirstDayOfWeekForMonth + 1;
-                     true -> 
+                     true ->
                        7 - FirstDayOfWeekForMonth + 1 + WantedDay
                    end,
   FirstDate = {Year, Month, FirstWantedDay},
@@ -241,7 +241,7 @@ get_date(MinGap, {Date, _} = DateTime, From, Result) ->
         _ ->
           ResultToSecond = calendar:datetime_to_gregorian_seconds(Result),
           if
-            (ResultToSecond > DateTimeToSecond) 
+            (ResultToSecond > DateTimeToSecond)
             and (DateTimeToSecond >= (FromToSecond + MinGap))
             ->
               DateTime;

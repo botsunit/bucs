@@ -168,16 +168,16 @@ function_exist(Module, Function, Arity) ->
   case code:ensure_loaded(Module) of
     {module, Module} ->
       erlang:function_exported(Module, Function, Arity);
-    _ -> 
+    _ ->
       false
   end.
 
 % @doc
 % @end
 apply(Module, Function, Args) ->
-  try 
+  try
     {ok, erlang:apply(Module, Function, Args)}
-  catch 
+  catch
     _:_ ->
       error
   end.
@@ -227,7 +227,7 @@ compare_as(Fun, V1, V2) ->
 % Log = math:log(Add),
 % Mul = multiplication(Log, 7),
 % Res = addition(Mul, 7).
-% 
+%
 % % With bucs:pipecall/2 :
 % Res = bucs:pipecall([
 %                      {fun math:pow/2, [7, 3]},
