@@ -5,7 +5,6 @@ PROJECT_DESCRIPTION = Bots Unit Commons
 DOC_DEPS = edown
 dep_edown = git https://github.com/botsunit/edown.git master
 
-
 include erlang.mk
 
 EDOC_OPTS = {doclet, edown_doclet} \
