@@ -10,7 +10,7 @@
 %% Example:
 %%
 %% <pre lang="erlang">
-%% &lt;&lt;"toto-tata-titi"&gt;&gt; = ebinary:join([&lt;&lt;"toto"&gt;&gt;, &lt;&lt;"tata"&gt;&gt;, &lt;&lt;"titi"&gt;&gt;], &lt;&lt;"-"&gt;&gt;).
+%% &lt;&lt;"toto-tata-titi"&gt;&gt; = bucbinary:join([&lt;&lt;"toto"&gt;&gt;, &lt;&lt;"tata"&gt;&gt;, &lt;&lt;"titi"&gt;&gt;], &lt;&lt;"-"&gt;&gt;).
 %% </pre>
 %% @end
 -spec join([binary()], binary()) -> binary().

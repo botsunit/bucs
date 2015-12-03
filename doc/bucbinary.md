@@ -31,6 +31,6 @@ join a list of binaries with the given separator
 Example:
 
 ```erlang
-<<"toto-tata-titi">> = ebinary:join([<<"toto">>, <<"tata">>, <<"titi">>], <<"-">>).
+<<"toto-tata-titi">> = bucbinary:join([<<"toto">>, <<"tata">>, <<"titi">>], <<"-">>).
 ```
 
