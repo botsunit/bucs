@@ -2,6 +2,7 @@
 
 -export([
          pipemap/2,
+         keyfind/3,
          keyfind/4,
          delete_if/2
         ]).
@@ -19,6 +20,11 @@ pipemap(Funs, List) ->
                       [{Fun, [E]}|Rest]
                   end)
             end, List).
+
+% @equiv keyfind(Key, N, TupleList, false)
+-spec keyfind(term(), integer(), [tuple()]) -> term().
+keyfind(Key, N, TupleList) ->
+  keyfind(Key, N, TupleList, false).
 
 % @doc
 % @end
