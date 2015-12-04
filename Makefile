@@ -1,6 +1,4 @@
 PROJECT = bucs
-PROJECT_VERSION = 0.0.1
-PROJECT_DESCRIPTION = Bots Unit Commons
 
 DOC_DEPS = edown
 dep_edown = git https://github.com/botsunit/edown.git master
