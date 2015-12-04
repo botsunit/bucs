@@ -10,7 +10,7 @@ NIF(nif_local_timezone) {
   time_t currentTime = time(NULL);
   struct tm *localTime;
   localTime = localtime(&currentTime);
-  long absDiff = abs(localTime->tm_gmtoff);
+  long absDiff = labs(localTime->tm_gmtoff);
   long hour = absDiff/60/60;
   long min = (absDiff - (hour*60*60))/60;
   memset(tz, 0, 7);
