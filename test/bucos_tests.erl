@@ -9,6 +9,7 @@ bucos_test_() ->
     ?_test(t_return())
     , ?_test(t_timeout())
     , ?_test(t_error())
+    , ?_test(t_error_with_data())
    ]}.
 
 setup() ->
@@ -24,5 +25,8 @@ t_timeout() ->
   ?assertMatch({error, timeout}, bucos:run("sleep 10", 10)).
 
 t_error() ->
-  ?assertMatch({error, _}, bucos:run("invalidCommand 2>&1")).
+  ?assertMatch({error, _, _ }, bucos:run("invalidCommand 2>&1")).
 
+t_error_with_data() ->
+  {error,ErrCode,Data} = bucos:run("invalidCommand 2>&1"),
+  ?assert(ErrCode /= 0 andalso string:len(Data)>14). % >14: I assume that the faulty command is somewhere inside the error output

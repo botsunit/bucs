@@ -11,6 +11,8 @@ bucinet_test_() ->
     , ?_test(t_ip_to_binary())
     , ?_test(t_active_ip())
     , ?_test(t_loopback())
+    , ?_test(t_active_ips())
+
    ]}.
 
 setup() ->
@@ -32,7 +34,7 @@ t_to_ip() ->
                bucinet:to_ip("This is not an IP")).
 
 t_ip_to_string() ->
-  ?assertMatch("192.168.10.1", 
+  ?assertMatch("192.168.10.1",
                bucinet:ip_to_string({192, 168, 10, 1})),
   ?assertMatch(error,
                bucinet:ip_to_string({192, 317, 10, 1})),
@@ -42,7 +44,7 @@ t_ip_to_string() ->
                bucinet:ip_to_string({192, 168})).
 
 t_ip_to_binary() ->
-  ?assertMatch(<<"192.168.10.1">>, 
+  ?assertMatch(<<"192.168.10.1">>,
                bucinet:ip_to_binary({192, 168, 10, 1})),
   ?assertMatch(error,
                bucinet:ip_to_binary({192, 317, 10, 1})),
@@ -56,4 +58,8 @@ t_active_ip() ->
 
 t_loopback() ->
   ?assert(bucinet:is_ip(bucinet:loopback())).
+
+
+t_active_ips() ->
+  ?assert(lists:all(fun bucinet:is_ip/1, bucinet:active_ips())).
 

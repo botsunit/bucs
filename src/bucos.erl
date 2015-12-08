@@ -10,7 +10,7 @@ run(Cmd) ->
 % @doc
 % Execute the given shell command
 % @end
--spec run(string() | binary(), integer()) -> {ok, term()} | {error, term()}.
+-spec run(string() | binary(), integer()) -> {ok, term()} | {error, term()} | {error, term(), string()}.
 run(Cmd, Timeout) ->
   Port = erlang:open_port({spawn, bucs:to_string(Cmd)},[exit_status]),
   loop(Port,[], Timeout).
@@ -19,7 +19,7 @@ loop(Port, Data, Timeout) ->
   receive
     {Port, {data, NewData}} -> loop(Port, Data++NewData, Timeout);
     {Port, {exit_status, 0}} -> {ok, Data};
-    {Port, {exit_status, S}} -> {error, S}
+    {Port, {exit_status, S}} -> {error, S, Data}
   after
     Timeout ->
       {error, timeout}
