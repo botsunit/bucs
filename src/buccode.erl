@@ -17,7 +17,7 @@ priv_dir(App) ->
                          {fun filename:dirname/1, [AppFilename]},
                          fun filename:dirname/1,
                          {fun filename:join/2, ["priv"]},
-                          fun bucfile:expand_path/1
+                         fun bucfile:expand_path/1
                         ])
       end;
     Path ->

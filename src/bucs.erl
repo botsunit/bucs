@@ -149,6 +149,7 @@ to_float(Value) when is_atom(Value) ->
 % @deprecated
 module_exist(Module) ->
   module_exists(Module).
+
 % @doc
 % Check if the given module exist
 % @end
@@ -169,6 +170,7 @@ module_exists(Module) ->
 % @deprecated
 function_exist(Module, Function, Arity) ->
   function_exists(Module, Function, Arity).
+
 % @doc
 % Check if the given function exist
 % @end
