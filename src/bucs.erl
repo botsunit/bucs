@@ -8,7 +8,9 @@
          to_integer/1,
          to_float/1,
          module_exist/1,
+         module_exists/1,
          function_exist/3,
+         function_exists/3,
          apply/3,
          is_string/1,
          compare_as_list/2,
@@ -144,10 +146,13 @@ to_float(Value) when is_binary(Value) ->
 to_float(Value) when is_atom(Value) ->
   to_float(atom_to_list(Value)).
 
+% @deprecated
+module_exist(Module) ->
+  module_exists(Module).
 % @doc
 % Check if the given module exist
 % @end
-module_exist(Module) ->
+module_exists(Module) ->
   case is_atom(Module) of
     true ->
       try Module:module_info() of
@@ -161,10 +166,13 @@ module_exist(Module) ->
       false
   end.
 
+% @deprecated
+function_exist(Module, Function, Arity) ->
+  function_exists(Module, Function, Arity).
 % @doc
 % Check if the given function exist
 % @end
-function_exist(Module, Function, Arity) ->
+function_exists(Module, Function, Arity) ->
   case code:ensure_loaded(Module) of
     {module, Module} ->
       erlang:function_exported(Module, Function, Arity);

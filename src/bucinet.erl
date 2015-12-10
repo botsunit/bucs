@@ -5,6 +5,7 @@
          ip_to_string/1,
          ip_to_binary/1,
          active_ip/0,
+         active_ips/0,
          loopback/0,
          is_ip/1
         ]).
@@ -55,18 +56,31 @@ ip_to_binary(IP) ->
   end.
 
 % @doc
-% Return the first active IP.
+% Return the first active IP (or loopback if none).
 % @end
 -spec active_ip() -> inet:ip4_address().
 active_ip() ->
-  get_active_ip(get_iflist()).
+  case get_active_ips(get_iflist()) of
+    [] -> loopback();
+    [Ip|_] -> Ip
+  end.
+
+% @doc
+% Return all actives IPs.
+% @end
+-spec active_ips() -> [inet:ip4_address()].
+active_ips() ->
+  get_active_ips(get_iflist()).
 
 % @doc
 % Return the loopback IP.
 % @end
 -spec loopback() -> inet:ip4_address().
 loopback() ->
-  get_loopback(get_iflist()).
+  case get_loopback(get_iflist()) of
+    [] -> error;
+    [L|_] -> L
+  end.
 
 % @doc
 % Return true if the given parameter is an IP.
@@ -82,13 +96,15 @@ is_ip(IP) ->
 
 % privates
 
-get_active_ip(If_list) ->
-  get_ip([A || A <- If_list, inet:ifget(A,[addr]) /= {ok,[{addr,{127,0,0,1}}]}, filter_networkcard(list_to_binary(A))]).
+get_active_ips(If_list) ->
+  get_ips([A || A <- If_list, inet:ifget(A,[addr]) /= {ok,[{addr,{127,0,0,1}}]}, filter_networkcard(list_to_binary(A))]).
 
 get_iflist() ->
   {ok, IfList} = inet:getiflist(),
   IfList.
 
+filter_networkcard(<<"vboxnet", _R/binary>>) ->
+ false;
 filter_networkcard(<<"vnic", _R/binary>>) ->
   false;
 filter_networkcard(<<"vmnet", _R/binary>>) ->
@@ -96,14 +112,17 @@ filter_networkcard(<<"vmnet", _R/binary>>) ->
 filter_networkcard(_) ->
   true.
 
-get_ip([]) ->
-  loopback();
-get_ip([If]) ->
+get_ips(A) ->
+  get_ips(A, []).
+
+get_ips([], R) ->
+  R;
+get_ips([If|Rest], R) ->
   case inet:ifget(If, [addr]) of
-    {ok, []} -> loopback();
-    {_, [{_, Ip}]} -> Ip
+    {ok, []} -> get_ips(Rest, R);
+    {_, [{_, Ip}]} -> get_ips(Rest, [Ip|R])
   end.
 
 get_loopback(If_list) ->
-  get_ip([A || A <- If_list, inet:ifget(A,[addr]) == {ok,[{addr,{127,0,0,1}}]}]).
+  get_ips([A || A <- If_list, inet:ifget(A,[addr]) == {ok,[{addr,{127,0,0,1}}]}]).
 
