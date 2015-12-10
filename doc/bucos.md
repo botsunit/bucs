@@ -1,8 +1,23 @@
 
 
 # Module bucos #
+* [Data Types](#types)
 * [Function Index](#index)
 * [Function Details](#functions)
+
+<a name="types"></a>
+
+## Data Types ##
+
+
+
+
+### <a name="type-options">options()</a> ###
+
+
+<pre><code>
+options() = {timeout, integer()} | stdout_on_error
+</code></pre>
 
 <a name="index"></a>
 
@@ -10,7 +25,9 @@
 
 
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#run-1">run/1</a></td><td>Equivalent to <a href="#run-2"><tt>run(Cmd, 5000)</tt></a>.</td></tr><tr><td valign="top"><a href="#run-2">run/2</a></td><td>
-Execute the given shell command.</td></tr></table>
+Execute the given shell command, waiting at most for a given timeout before returning
+"Options" may contain:
+- stdout_on_error : To get standard output in the result, in case of error.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -33,9 +50,13 @@ Equivalent to [`run(Cmd, 5000)`](#run-2).
 ### run/2 ###
 
 <pre><code>
-run(Cmd::string() | binary(), Timeout::integer()) -&gt; {ok, term()} | {error, term()}
+run(Cmd::string() | binary(), Timeout::integer() | [<a href="#type-options">options()</a>]) -&gt; {ok, term()} | {error, term()} | {error, term(), string()}
 </code></pre>
 <br />
 
-Execute the given shell command
+Execute the given shell command, waiting at most for a given timeout before returning
+"Options" may contain:
+- stdout_on_error : To get standard output in the result, in case of error.
+- {timeout, integer()} : To set a maximum time to wait for, before returning with a {error,timeout} result
+Note: If more than one shell commands are "chained" in the given string, only the first one is executed.
 
