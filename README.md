@@ -36,6 +36,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 <tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/buclists.md" class="module">buclists</a></td></tr>
 <tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/bucos.md" class="module">bucos</a></td></tr>
 <tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/bucs.md" class="module">bucs</a></td></tr>
+<tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/bucstring.md" class="module">bucstring</a></td></tr>
 <tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/buctimer.md" class="module">buctimer</a></td></tr>
 <tr><td><a href="https://github.com/botsunit/bucs/blob/master/doc/bucuri.md" class="module">bucuri</a></td></tr></table>
 
