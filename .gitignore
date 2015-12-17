@@ -17,3 +17,4 @@ xrefr
 *.o
 *.so
 c_src/env.mk
+test/TEST-*.xml
