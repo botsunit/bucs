@@ -4,5 +4,5 @@
 	{modules, []},
 	{registered, []},
 	{applications, [kernel,stdlib]},
-  {mod, {bucrandom_app, []}}
+  {mod, {bucs_app, []}}
 ]}.

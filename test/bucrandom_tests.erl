@@ -30,17 +30,16 @@ all_are_different([H|T]) ->
   not lists:member(H,T) andalso all_are_different(T).
 
 t_randstr_has_good_content() ->
-  Legal_chars = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890",
-  Random_str = bucrandom:randstr(1024),
-  Legal_str = [X || X <- Random_str,lists:member(X,Legal_chars)],
-  ?assertEqual(Legal_str,Random_str).
-
+  LegalChars = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890",
+  RandomStr = bucrandom:randstr(1024),
+  LegalStr = [X || X <- RandomStr, lists:member(X, LegalChars)],
+  ?assertEqual(LegalStr, RandomStr).
 
 t_randstr_has_good_length() ->
-  ?assertEqual(234,string:len(bucrandom:randstr(234))).
+  ?assertEqual(234, string:len(bucrandom:randstr(234))).
 
 t_randstr_is_good_random() ->
   ?assert(all_are_different(build_randstrs(100))).
 
 t_empty_randstr_is_empty() ->
-  ?assertEqual([],bucrandom:randstr(0)).
+  ?assertEqual([], bucrandom:randstr(0)).

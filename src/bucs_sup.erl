@@ -1,5 +1,5 @@
 % @hidden
--module(bucrandom_sup).
+-module(bucs_sup).
 -behaviour(supervisor).
 
 -export([start_link/0]).
