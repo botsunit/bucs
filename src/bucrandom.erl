@@ -81,7 +81,7 @@ private_randstr(Size) ->
   lists:flatten([lists:sublist(?CHARS, random:uniform(length(?CHARS)), 1) || _ <- lists:seq(1, Size)]).
 
 ensure_started() ->
-  case [T || {A, _, _} = T <- application:which_applications(), A =:= bucrandom] of
-    [] -> application:ensure_all_started(bucrandom);
-    [{bucrandom, _, _}|_] -> ok
+  case [A || {A, _, _} <- application:which_applications(), A =:= bucs] of
+    [] -> application:ensure_all_started(bucs);
+    [bucs] -> ok
   end.

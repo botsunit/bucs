@@ -13,7 +13,6 @@ bucrandom_test_() ->
    ]}.
 
 setup() ->
-  _ = application:ensure_all_started(bucs),
   ok.
 
 teardown(_) ->
