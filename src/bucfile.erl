@@ -8,6 +8,7 @@
          remove_recursive/1,
          copy/2,
          copy/3,
+         copyfile/2,
          relative_from/2,
          realpath/1,
          wildcard/2,
