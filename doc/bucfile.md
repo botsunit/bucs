@@ -12,7 +12,7 @@
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#copy-2">copy/2</a></td><td>Equivalent to <a href="#copy-3"><tt>copy(Source, Destination, [])</tt></a>.</td></tr><tr><td valign="top"><a href="#copy-3">copy/3</a></td><td>
 Copy a <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#expand_path-1">expand_path/1</a></td><td>
 Expand the given path.</td></tr><tr><td valign="top"><a href="#make_dir-1">make_dir/1</a></td><td>
-Create the given directory if it not exist.</td></tr><tr><td valign="top"><a href="#normalize_path-1">normalize_path/1</a></td><td>
+Create the given directory if it not exist.</td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td></td></tr><tr><td valign="top"><a href="#normalize_path-1">normalize_path/1</a></td><td>
 Normalize the given path.</td></tr><tr><td valign="top"><a href="#realpath-1">realpath/1</a></td><td>
 Return the realpath of the given path.</td></tr><tr><td valign="top"><a href="#relative_from-2">relative_from/2</a></td><td>
 Return the given <tt>FilePath</tt> relatively to the <tt>FromPath</tt>.</td></tr><tr><td valign="top"><a href="#remove_recursive-1">remove_recursive/1</a></td><td>
@@ -75,6 +75,12 @@ Example:
 `make_dir(Path) -> any()`
 
 Create the given directory if it not exist
+
+<a name="match-2"></a>
+
+### match/2 ###
+
+`match(Path, Exp) -> any()`
 
 <a name="normalize_path-1"></a>
 

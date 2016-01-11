@@ -8,6 +8,7 @@ bucfile_test_() ->
    [
       ?_test(t_realpath())
       , ?_test(t_realtive_from())
+      , ?_test(t_match())
    ]}.
 
 setup() ->
@@ -52,4 +53,18 @@ t_realtive_from() ->
   ?assertEqual("../titi/file.txt" , bucfile:relative_from("/toto/titi/file.txt", "/toto/tutu")),
   ?assertEqual("../titi/file.txt" , bucfile:relative_from("toto/titi/file.txt", "toto/tutu")),
   ?assertEqual("../../toto/titi/file.txt" , bucfile:relative_from("/toto/titi/file.txt", "/tata/tutu")).
+
+t_match() ->
+  ?assert(bucfile:match("a/b/c", "**/b/**")),
+  ?assert(bucfile:match("a/b/c", "*/b/*")),
+  ?assert(bucfile:match("a/b/c", "**/b/*")),
+  ?assert(bucfile:match("a/b/c", "*/b/**")),
+  ?assert(bucfile:match("a/b/c/x", "**/b/**")),
+  ?assert(bucfile:match("a/b/c/x", "*/b/**")),
+  ?assert(bucfile:match("a/b/c/x", "*/b/**")),
+  ?assertEqual(false, bucfile:match("a/b/c/x", "*/b/*")),
+  ?assertEqual(false, bucfile:match("a/b/c/x", "**/b/*")),
+  ?assertEqual(false, bucfile:match("a/b/c", "b")),
+  ?assert(bucfile:match("a/.b/c", "**/.b/**")),
+  ?assertEqual(false, bucfile:match("a/xb/c", "**/.b/**")).
 
