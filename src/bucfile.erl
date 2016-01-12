@@ -12,7 +12,9 @@
          relative_from/2,
          realpath/1,
          wildcard/2,
-         match/2
+         wildcard/3,
+         match/2,
+         match/3
         ]).
 
 %% @doc
@@ -214,26 +216,76 @@ realpath(Path) ->
      )
    ).
 
-%% @doc
-%% Same as <tt>filelib:wildcard/1</tt> but where files listed in <tt>Exclude</tt> are excluded.
-%% @end
+%% @equiv wildcard(Path, Exclude, [])
 wildcard(Path, Exclude) ->
+  wildcard(Path, Exclude, []).
+
+%% @doc
+%% Same as <tt>filelib:wildcard/1</tt> but where expressions listed in <tt>Exclude</tt> are excluded.
+%%
+%% <tt>Options:</tt>
+%% <ul>
+%% <li><tt>expand_path</tt> : the <tt>Path</tt> wil be expanded using <tt>bucfile:expand_path/1</tt></li>
+%% <li><tt>{cd, From}</tt> : the <tt>Path</tt> will be prefixed with <tt>From</tt></li>
+%% </ul>
+%% @end
+wildcard(Path, Exclude, Options) ->
   buclists:delete_if(
     fun(P) ->
         lists:any(
           fun(E) ->
-              match(P, E)
+              match(P, E, Options)
           end, Exclude)
     end, filelib:wildcard(Path)).
 
-%% @doc
-%% @end
+%% @equiv match(Path, Exp, [])
 match(Path, Exp) ->
-  Exp1 = bucstring:gsub(Exp, ".", "\\."),
-  Exp2 = bucstring:gsub(Exp1, "*", "[^/]*"),
-  Exp3 = bucstring:gsub(Exp2, "[^/]*[^/]*", ".*"),
-  Exp4 = "^" ++ Exp3 ++ "$",
-  case re:run(Path, Exp4) of
+  match(Path, Exp, []).
+
+%% @doc
+%% Return true if the <tt>Path</tt> match the <tt>Expression</tt>
+%%
+%% <tt>Options:</tt>
+%% <ul>
+%% <li><tt>expand_path</tt> : the <tt>Path</tt> wil be expanded using <tt>bucfile:expand_path/1</tt></li>
+%% <li><tt>{cd, From}</tt> : the <tt>Path</tt> will be prefixed with <tt>From</tt></li>
+%% </ul>
+%%
+%% Example:
+%%
+%% <pre>
+%% bucfile:match("a/b/c", "**/b/**").
+%% % => true
+%% bucfile:match("a/b/c", "**/a/**").
+%% % => false
+%% bucfile:match("/a/b/c", "**/a/**").
+%% % => true
+%% bucfile:match("a/b/c", "**/a/**", [expand_path]).
+%% % => true
+%% bucfile:match("a/b/c", "**/a/**", [{cd, "/tmp"}]).
+%% % => true
+%% bucfile:match("a/b/c", "**/tmp/**", [{cd, "/tmp"}]).
+%% % => true
+%% bucfile:match("a/b/c", "**/tmp/**", [{cd, "tmp"}]).
+%% % => false
+%% bucfile:match("a/b/c", "**/tmp/**", [expand_path, {cd, "tmp"}]).
+%% % => true
+%% </pre>
+%% @end
+match(Path, Expression, Options) ->
+  Path1 = case lists:keyfind(cd, 1, Options) of
+            {cd, CD} -> filename:join([CD, Path]);
+            _ -> Path
+          end,
+  Path2 = case lists:member(expand_path, Options) of
+            true -> expand_path(Path1);
+            false -> Path1
+          end,
+  Expression1 = bucstring:gsub(Expression, ".", "\\."),
+  Expression2 = bucstring:gsub(Expression1, "*", "[^/]*"),
+  Expression3 = bucstring:gsub(Expression2, "[^/]*[^/]*", ".*"),
+  Expression4 = "^" ++ Expression3 ++ "$",
+  case re:run(Path2, Expression4) of
     nomatch -> false;
     _ -> true
   end.

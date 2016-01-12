@@ -66,5 +66,12 @@ t_match() ->
   ?assertEqual(false, bucfile:match("a/b/c/x", "**/b/*")),
   ?assertEqual(false, bucfile:match("a/b/c", "b")),
   ?assert(bucfile:match("a/.b/c", "**/.b/**")),
-  ?assertEqual(false, bucfile:match("a/xb/c", "**/.b/**")).
+  ?assertEqual(false, bucfile:match("a/xb/c", "**/.b/**")),
+  ?assertEqual(false, bucfile:match("a/b/c", "**/a/**")),
+  ?assertEqual(true, bucfile:match("/a/b/c", "**/a/**")),
+  ?assertEqual(true, bucfile:match("a/b/c", "**/a/**", [expand_path])),
+  ?assertEqual(true, bucfile:match("a/b/c", "**/a/**", [{cd, "/tmp"}])),
+  ?assertEqual(true, bucfile:match("a/b/c", "**/tmp/**", [{cd, "/tmp"}])),
+  ?assertEqual(false, bucfile:match("a/b/c", "**/tmp/**", [{cd, "tmp"}])),
+  ?assertEqual(true, bucfile:match("a/b/c", "**/tmp/**", [expand_path, {cd, "tmp"}])).
 
