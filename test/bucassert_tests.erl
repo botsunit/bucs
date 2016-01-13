@@ -1,6 +1,6 @@
 -module(bucassert_tests).
 
--include_lib("../include/assert.hrl").
+-include_lib("../include/bucassert.hrl").
 -include_lib("eunit/include/eunit.hrl").
 
 bucassert_test_() ->
