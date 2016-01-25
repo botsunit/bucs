@@ -99,6 +99,8 @@ Equivalent to [`match(Path, Exp, [])`](#match-3).
 
 Return true if the `Path` match the `Expression`
 
+The exclude string looks like a wildcard string.
+
 `Options:`
 
 * `expand_path` : the `Path` wil be expanded using `bucfile:expand_path/1`
@@ -204,6 +206,8 @@ Equivalent to [`wildcard(Path, Exclude, [])`](#wildcard-3).
 `wildcard(Path, Exclude, Options) -> any()`
 
 Same as `filelib:wildcard/1` but where expressions listed in `Exclude` are excluded.
+
+The exclude string looks like a wildcard string.
 
 `Options:`
 

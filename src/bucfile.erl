@@ -223,6 +223,8 @@ wildcard(Path, Exclude) ->
 %% @doc
 %% Same as <tt>filelib:wildcard/1</tt> but where expressions listed in <tt>Exclude</tt> are excluded.
 %%
+%% The exclude string looks like a wildcard string.
+%%
 %% <tt>Options:</tt>
 %% <ul>
 %% <li><tt>expand_path</tt> : the <tt>Path</tt> wil be expanded using <tt>bucfile:expand_path/1</tt></li>
@@ -244,6 +246,8 @@ match(Path, Exp) ->
 
 %% @doc
 %% Return true if the <tt>Path</tt> match the <tt>Expression</tt>
+%%
+%% The exclude string looks like a wildcard string.
 %%
 %% <tt>Options:</tt>
 %% <ul>
@@ -281,11 +285,24 @@ match(Path, Expression, Options) ->
             true -> expand_path(Path1);
             false -> Path1
           end,
-  Expression1 = bucstring:gsub(Expression, ".", "\\."),
+  Expression1 = bucstring:gsub(Expression, "?", "."),
   Expression2 = bucstring:gsub(Expression1, "*", "[^/]*"),
   Expression3 = bucstring:gsub(Expression2, "[^/]*[^/]*", ".*"),
   Expression4 = "^" ++ Expression3 ++ "$",
-  case re:run(Path2, Expression4) of
+  {Expression5, _} = lists:foldl(fun
+                         (${, {Acc, none}) ->
+                           {[$(|Acc], in};
+                         ($}, {Acc, in}) ->
+                           {[$)|Acc], none};
+                         ($,, {Acc, in}) ->
+                           {[$||Acc], in};
+                         (32, {Acc, in}) ->
+                           {Acc, in};
+                         (C, {Acc, T}) ->
+                           {[C|Acc], T}
+                       end, {"", none}, Expression4),
+  Expression6 = lists:reverse(Expression5),
+  case re:run(Path2, Expression6) of
     nomatch -> false;
     _ -> true
   end.
