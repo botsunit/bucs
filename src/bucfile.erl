@@ -285,7 +285,8 @@ match(Path, Expression, Options) ->
             true -> expand_path(Path1);
             false -> Path1
           end,
-  Expression1 = bucstring:gsub(Expression, "?", "."),
+  Expression0 = bucstring:gsub(Expression, ".", "\\."),
+  Expression1 = bucstring:gsub(Expression0, "?", "."),
   Expression2 = bucstring:gsub(Expression1, "*", "[^/]*"),
   Expression3 = bucstring:gsub(Expression2, "[^/]*[^/]*", ".*"),
   Expression4 = "^" ++ Expression3 ++ "$",

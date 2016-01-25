@@ -82,5 +82,10 @@ t_match() ->
   ?assertNot(bucfile:match("tatu", "t[b,c,d,f,g]t[a,e,i,o,u]")),
   ?assertNot(bucfile:match("tatu", "t[a,e,i,o,u]t[b,c,d,f,g]")),
   ?assert(bucfile:match("hello.erl", "hello.{erl,hrl}")),
-  ?assertNot(bucfile:match("hello.cpp", "hello.{erl,hrl}")).
+  ?assertNot(bucfile:match("hello.cpp", "hello.{erl,hrl}")),
+  ?assert(bucfile:match("hello.erl", "hello?erl")),
+  ?assert(bucfile:match("hello.erl", "he??o.erl")),
+  ?assertNot(bucfile:match("helllo.erl", "he??o.erl")),
+  ?assert(bucfile:match("hello.erl", "hello.erl")),
+  ?assertNot(bucfile:match("hello-erl", "hello.erl")).
 
