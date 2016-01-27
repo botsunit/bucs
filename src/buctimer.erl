@@ -67,9 +67,14 @@ next({_, _, _, _, _, _} = Spec,
                                                        MM <- Minutes,
                                                        SS <- Seconds],
                               MinGap = min_gap(Spec),
-                              case lists:foldl(fun(DateTime, Result) ->
-                                                       get_date(MinGap, DateTime, FromAsDT, Result)
-                                                   end,
+                              case lists:foldl(fun({D, _} = DateTime, Result) ->
+                                                   case calendar:valid_date(D) of
+                                                     true ->
+                                                       get_date(MinGap, DateTime, FromAsDT, Result);
+                                                     false ->
+                                                       Result
+                                                   end
+                                               end,
                                                undefined,
                                                [{Date, Time} || Date <- Dates, Time <- Times]) of
                                 undefined -> stop;
