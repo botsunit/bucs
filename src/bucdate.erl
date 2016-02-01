@@ -1,4 +1,3 @@
-%% vi:ts=4 sw=4 et
 %% @copyright Dale Harvey
 %% @doc Format dates in erlang
 %%
@@ -61,7 +60,13 @@ nif_stub_error(Line) ->
     erlang:nif_error({nif_not_loaded,module,?MODULE,line,Line}).
 %% @hidden
 init() ->
-    erlang:load_nif(filename:join(buccode:priv_dir(bucs), bucs), 0).
+  NIF = filename:join(buccode:priv_dir(bucs), bucs),
+  case filelib:is_file(NIF) of
+    true ->
+      erlang:load_nif(NIF, 0);
+    false ->
+      ok
+  end.
 
 %% @doc
 %% Return the local timezone
