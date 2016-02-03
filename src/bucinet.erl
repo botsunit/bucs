@@ -109,6 +109,8 @@ filter_networkcard(<<"vnic", _R/binary>>) ->
   false;
 filter_networkcard(<<"vmnet", _R/binary>>) ->
   false;
+filter_networkcard(<<"docker", _R/binary>>) ->
+  false;
 filter_networkcard(_) ->
   true.
 
