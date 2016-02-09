@@ -19,7 +19,8 @@
          compare_as_integer/2,
          compare_as_binary/2,
          pipecall/1,
-         match/2
+         match/2,
+         call/3
         ]).
 
 % @doc
@@ -258,4 +259,19 @@ pipecall([{Call, Args}|Rest], Out) ->
   pipecall(Rest, erlang:apply(Call, [Out|Args]));
 pipecall([Call|Rest], Out) ->
   pipecall([{Call, []}|Rest], Out).
+
+% @doc
+% Returns the result of applying Function in Module to Args. The applied
+% function must be exported from Module. The arity of the function is the length of Args.
+%
+% Return <tt>{error, undefined_function} if the applied function is not exported.
+% @end
+-spec call(Module :: module(), Function :: atom(), Args :: [term()]) -> term() | {error, undefined_function}.
+call(Module, Function, Args) ->
+  case erlang:function_exposted(Module, Function, length(Args)) of
+    true ->
+      erlang:apply(Module, Function, Args);
+    false ->
+      {error, undefined_function}
+  end.
 
