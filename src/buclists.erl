@@ -4,6 +4,8 @@
          pipemap/2,
          keyfind/3,
          keyfind/4,
+         keyufind/3,
+         keyufind/4,
          delete_if/2,
          merge_keylists/3
         ]).
@@ -27,6 +29,11 @@ pipemap(Funs, List) ->
 keyfind(Key, N, TupleList) ->
   keyfind(Key, N, TupleList, false).
 
+% @equiv keyufind(Key, N, TupleList, false)
+-spec keyufind(term(), integer(), [tuple()]) -> term().
+keyufind(Key, N, TupleList) ->
+  keyufind(Key, N, TupleList, false).
+
 % @doc
 % @end
 -spec keyfind(term(), integer(), [tuple()], term()) -> term().
@@ -35,6 +42,13 @@ keyfind(Key, N, TupleList, Default) ->
     {Key, Value} -> Value;
     false -> Default
   end.
+
+% @doc
+% @end
+-spec keyufind(term(), integer(), [tuple()], term()) -> term().
+keyufind(Key, N, TupleList, Default) ->
+  keyfind(bucs:to_atom(Key), N, lists:keymap(fun bucs:to_atom/1, N, TupleList), Default).
+
 
 %% @doc
 %% @end
