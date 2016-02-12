@@ -9,9 +9,13 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#copy-2">copy/2</a></td><td>Equivalent to <a href="#copy-3"><tt>copy(Source, Destination, [])</tt></a>.</td></tr><tr><td valign="top"><a href="#copy-3">copy/3</a></td><td>
-Copy a <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#copyfile-2">copyfile/2</a></td><td></td></tr><tr><td valign="top"><a href="#expand_path-1">expand_path/1</a></td><td>
-Expand the given path.</td></tr><tr><td valign="top"><a href="#make_dir-1">make_dir/1</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#copy-2">copy/2</a></td><td>Equivalent to <a href="#copy-3"><tt>copy(Source, Destination,
+[preserve_file_info, recursive])</tt></a>.</td></tr><tr><td valign="top"><a href="#copy-3">copy/3</a></td><td>
+Copy a <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#copyfile-2">copyfile/2</a></td><td>Equivalent to <a href="#copyfile-3"><tt>copyfile(Source, Destination, [preserve_file_info])</tt></a>.</td></tr><tr><td valign="top"><a href="#copyfile-3">copyfile/3</a></td><td>
+Copy file <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#expand_path-1">expand_path/1</a></td><td>
+Expand the given path.</td></tr><tr><td valign="top"><a href="#is_executable-1">is_executable/1</a></td><td>
+Return true if <tt>File</tt> is executable, false otherwise.</td></tr><tr><td valign="top"><a href="#is_executable-2">is_executable/2</a></td><td>
+Return true if <tt>File</tt> is executable for <tt>Who</tt>, false otherwise.</td></tr><tr><td valign="top"><a href="#make_dir-1">make_dir/1</a></td><td>
 Create the given directory if it not exist.</td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td>Equivalent to <a href="#match-3"><tt>match(Path, Exp, [])</tt></a>.</td></tr><tr><td valign="top"><a href="#match-3">match/3</a></td><td>
 Return true if the <tt>Path</tt> match the <tt>Expression</tt></td></tr><tr><td valign="top"><a href="#normalize_path-1">normalize_path/1</a></td><td>
 Normalize the given path.</td></tr><tr><td valign="top"><a href="#realpath-1">realpath/1</a></td><td>
@@ -32,7 +36,7 @@ Same as <tt>filelib:wildcard/1</tt> but where expressions listed in <tt>Exclude<
 
 `copy(Source, Destination) -> any()`
 
-Equivalent to [`copy(Source, Destination, [])`](#copy-3).
+Equivalent to [`copy(Source, Destination,[preserve_file_info, recursive])`](#copy-3).
 
 <a name="copy-3"></a>
 
@@ -50,12 +54,45 @@ Available options:
 
 * `{only, [file:filename()]}`
 
+* `preserve_file_info` (default)
+
+* `default_file_info`
+
+* `{directory_mode, integer()}`
+
+* `{regular_file_mode, integer()}`
+
+* `{executable_file_mode, integer()}`
+
 
 <a name="copyfile-2"></a>
 
 ### copyfile/2 ###
 
 `copyfile(Source, Destination) -> any()`
+
+Equivalent to [`copyfile(Source, Destination, [preserve_file_info])`](#copyfile-3).
+
+<a name="copyfile-3"></a>
+
+### copyfile/3 ###
+
+`copyfile(Source, Destination, Options) -> any()`
+
+Copy file `Source` to a `Destination`
+
+Available options:
+
+* `preserve_file_info` (default)
+
+* `default_file_info`
+
+* `{directory_mode, integer()}`
+
+* `{regular_file_mode, integer()}`
+
+* `{executable_file_mode, integer()}`
+
 
 <a name="expand_path-1"></a>
 
@@ -74,6 +111,25 @@ Example:
 
   "/home/user" = bucfile:expand_path("~").<<"/home/user">> = bucfile:expand_path(<<"~">>).
 ```
+
+<a name="is_executable-1"></a>
+
+### is_executable/1 ###
+
+`is_executable(File) -> any()`
+
+Return true if `File` is executable, false otherwise
+
+<a name="is_executable-2"></a>
+
+### is_executable/2 ###
+
+<pre><code>
+is_executable(File::<a href="file.md#type-filename">file:filename()</a>, Who::owner | group | other | list()) -&gt; true | false
+</code></pre>
+<br />
+
+Return true if `File` is executable for `Who`, false otherwise
 
 <a name="make_dir-1"></a>
 

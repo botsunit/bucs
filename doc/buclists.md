@@ -9,7 +9,7 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete_if-2">delete_if/2</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-3">keyfind/3</a></td><td>Equivalent to <a href="#keyfind-4"><tt>keyfind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#merge_keylists-3">merge_keylists/3</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete_if-2">delete_if/2</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-3">keyfind/3</a></td><td>Equivalent to <a href="#keyfind-4"><tt>keyfind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#keyufind-3">keyufind/3</a></td><td>Equivalent to <a href="#keyufind-4"><tt>keyufind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyufind-4">keyufind/4</a></td><td></td></tr><tr><td valign="top"><a href="#merge_keylists-3">merge_keylists/3</a></td><td>
 Merge the two keylists.</td></tr><tr><td valign="top"><a href="#pipemap-2">pipemap/2</a></td><td></td></tr></table>
 
 
@@ -40,6 +40,26 @@ Equivalent to [`keyfind(Key, N, TupleList, false)`](#keyfind-4).
 
 <pre><code>
 keyfind(Key::term(), N::integer(), TupleList::[tuple()], Default::term()) -&gt; term()
+</code></pre>
+<br />
+
+<a name="keyufind-3"></a>
+
+### keyufind/3 ###
+
+<pre><code>
+keyufind(Key::term(), N::integer(), TupleList::[tuple()]) -&gt; term()
+</code></pre>
+<br />
+
+Equivalent to [`keyufind(Key, N, TupleList, false)`](#keyufind-4).
+
+<a name="keyufind-4"></a>
+
+### keyufind/4 ###
+
+<pre><code>
+keyufind(Key::term(), N::integer(), TupleList::[tuple()], Default::term()) -&gt; term()
 </code></pre>
 <br />
 

@@ -9,13 +9,17 @@
          copy/2,
          copy/3,
          copyfile/2,
+         copyfile/3,
          relative_from/2,
          realpath/1,
          wildcard/2,
          wildcard/3,
          match/2,
-         match/3
+         match/3,
+         is_executable/1,
+         is_executable/2
         ]).
+-include_lib("kernel/include/file.hrl").
 
 %% @doc
 %% Expand the given path
@@ -99,9 +103,9 @@ remove_recursive(Path) ->
       file:del_dir(Path)
   end.
 
-%% @equiv copy(Source, Destination, [])
+%% @equiv copy(Source, Destination, [preserve_file_info, recursive])
 copy(Source, Destination) ->
-  copy(Source, Destination, []).
+  do_copy(Source, Destination, [preserve_file_info, recursive]).
 
 %% @doc
 %% Copy a <tt>Source</tt> to a <tt>Destination</tt>
@@ -111,81 +115,199 @@ copy(Source, Destination) ->
 %%   <li><tt>recursive</tt></li>
 %%   <li><tt>{exclude, [file:filename()]}</tt></li>
 %%   <li><tt>{only, [file:filename()]}</tt></li>
+%%   <li><tt>preserve_file_info</tt> (default)</li>
+%%   <li><tt>default_file_info</tt></li>
+%%   <li><tt>{directory_mode, integer()}</tt></li>
+%%   <li><tt>{regular_file_mode, integer()}</tt></li>
+%%   <li><tt>{executable_file_mode, integer()}</tt></li>
 %% </ul>
 %% @end
 copy(Source, Destination, Options) ->
+  case lists:foldl(fun(Option, Acc) ->
+                       case lists:member(Option, Options) of
+                         true -> true;
+                         false ->
+                           case lists:keyfind(Option, 1, Options) of
+                             false -> Acc;
+                             _Tuple -> true
+                           end
+                       end
+                   end, false, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode, directory_mode]) of
+    true -> do_copy(Source, Destination, Options);
+    false -> do_copy(Source, Destination, [preserve_file_info|Options])
+  end.
+
+do_copy(Source, Destination, Options) ->
   case lists:member(recursive, Options) of
     true ->
       Base = filename:basename(Source),
       Dest = filename:join(Destination, Base),
       case filelib:is_dir(Source) of
         false ->
-          copyfile(Source, Dest);
+          copyfile(Source, Dest, Options);
         true ->
-          case file:read_file_info(Source) of
-            {ok, FileInfo} ->
-              case make_dir(Dest) of
-                ok ->
-                  case file:write_file_info(Dest, FileInfo) of
-                    ok -> ok;
-                    {error, Reason} ->
-                      error(Reason)
-                  end,
-                  SubFiles = sub_files(Source),
-                  SubFiles1 = case lists:keyfind(exclude, 1, Options) of
-                                false -> SubFiles;
-                                {exclude, ExcludedFiles} ->
-                                  buclists:delete_if(
-                                    fun(File) ->
-                                        lists:any(
-                                          fun(Exclude) ->
-                                              string:str(expand_path(File), Exclude) =/= 0
-                                          end, ExcludedFiles)
-                                    end, SubFiles)
-                              end,
-                  SubFiles2 = case lists:keyfind(only, 1, Options) of
-                                false ->
-                                  SubFiles1;
-                                {only, OnlyFiles} ->
-                                  buclists:delete_if(
-                                    fun(File) ->
-                                        lists:all(
-                                          fun(Only) ->
-                                              string:str(expand_path(File), Only) =:= 0
-                                          end, OnlyFiles)
-                                    end, SubFiles1)
-                              end,
-                  lists:foreach(fun(File) ->
-                                    copy(File, Dest, Options)
-                                end, SubFiles2);
-                {error, Reason} ->
-                  error(Reason)
-              end;
-            {error, Reason} ->
-              error(Reason)
-          end
+          _ = build_dir(Source, Dest, Options),
+          SubFiles = sub_files(Source),
+          SubFiles1 = case lists:keyfind(exclude, 1, Options) of
+                        false -> SubFiles;
+                        {exclude, ExcludedFiles} ->
+                          buclists:delete_if(
+                            fun(File) ->
+                                lists:any(
+                                  fun(Exclude) ->
+                                      string:str(expand_path(File), Exclude) =/= 0
+                                  end, ExcludedFiles)
+                            end, SubFiles)
+                      end,
+          SubFiles2 = case lists:keyfind(only, 1, Options) of
+                        false ->
+                          SubFiles1;
+                        {only, OnlyFiles} ->
+                          buclists:delete_if(
+                            fun(File) ->
+                                lists:all(
+                                  fun(Only) ->
+                                      string:str(expand_path(File), Only) =:= 0
+                                  end, OnlyFiles)
+                            end, SubFiles1)
+                      end,
+          lists:foreach(fun(File) ->
+                            do_copy(File, Dest, Options)
+                        end, SubFiles2)
       end;
     false ->
-      copyfile(Source, Destination)
+      copyfile(Source, Destination, Options)
   end.
 
-copyfile(Source, Destination) ->
-  case file:read_file_info(Source) of
-    {ok, FileInfo} ->
-      case file:copy(Source, Destination) of
-        {error, Reason} ->
-          error(Reason);
-        _ ->
-          case file:write_file_info(Destination, FileInfo) of
-            ok -> ok;
-            {error, Reason} ->
-              error(Reason)
-          end
-      end;
+build_dir(Source, Destination, Options) ->
+  case make_dir(Destination) of
+    ok ->
+      lists:foreach(fun(Option) ->
+                        case lists:member(Option, Options) of
+                          true -> change_file_mode(Source, Destination, Option);
+                          false ->
+                            case lists:keyfind(Option, 1, Options) of
+                              false -> ok;
+                              Tuple -> change_file_mode(Source, Destination, Tuple)
+                            end
+                        end
+                    end, [default_file_info, preserve_file_info, directory_mode, executable_file_mode]);
     {error, Reason} ->
       error(Reason)
   end.
 
+%% @equiv copyfile(Source, Destination, [preserve_file_info])
+copyfile(Source, Destination) ->
+  copyfile(Source, Destination, [preserve_file_info]).
+%% @doc
+%% Copy file <tt>Source</tt> to a <tt>Destination</tt>
+%%
+%% Available options:
+%% <ul>
+%%   <li><tt>preserve_file_info</tt> (default)</li>
+%%   <li><tt>default_file_info</tt></li>
+%%   <li><tt>{directory_mode, integer()}</tt></li>
+%%   <li><tt>{regular_file_mode, integer()}</tt></li>
+%%   <li><tt>{executable_file_mode, integer()}</tt></li>
+%% </ul>
+%% @end
+copyfile(Source, Destination, Options) ->
+  case file:copy(Source, Destination) of
+    {ok, _} ->
+      lists:foreach(fun(Option) ->
+                        case lists:member(Option, Options) of
+                          true -> change_file_mode(Source, Destination, Option);
+                          false ->
+                            case lists:keyfind(Option, 1, Options) of
+                              false -> ok;
+                              Tuple -> change_file_mode(Source, Destination, Tuple)
+                            end
+                        end
+                    end, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
+    {error, Reason} ->
+      error(Reason)
+  end.
+
+change_file_mode(_, _, default_file_info) ->
+  ok;
+change_file_mode(Source, Destination, preserve_file_info) ->
+  case file:read_file_info(Source) of
+    {ok, FileInfo} ->
+      case file:write_file_info(Destination, FileInfo) of
+        ok -> ok;
+        {error, Reason} ->
+          error(Reason)
+      end;
+    {error, Reason} ->
+      error(Reason)
+  end;
+change_file_mode(_, Destination, {regular_file_mode, Mode}) ->
+  case filelib:is_file(Destination) of
+    true ->
+      case file:change_mode(Destination, Mode) of
+        ok -> ok;
+        {error, Reason1} ->
+          error(Reason1)
+      end;
+    false ->
+      ok
+  end;
+change_file_mode(Source, Destination, {executable_file_mode, Mode}) ->
+  case filelib:is_file(Destination) and is_executable(Source, [owner, group, other]) of
+    true ->
+      case file:change_mode(Destination, Mode) of
+        ok -> ok;
+        {error, Reason1} ->
+          error(Reason1)
+      end;
+    false ->
+      ok
+  end;
+change_file_mode(_, Destination, {directory_mode, Mode}) ->
+  case filelib:is_dir(Destination) of
+    true ->
+      case file:change_mode(Destination, Mode) of
+        ok -> ok;
+        {error, Reason1} ->
+          error(Reason1)
+      end;
+    false ->
+      ok
+  end.
+
+% @doc
+% Return true if <tt>File</tt> is executable, false otherwise
+% @end
+is_executable(File) ->
+  case file:read_file_info(File) of
+    {ok, #file_info{mode = Mode}} ->
+      case integer_to_list(Mode, 8) of
+        [_, _, _, U, G, O] ->
+          #{owner => not((list_to_integer([U]) band 1) == 0),
+            group => not((list_to_integer([G]) band 1) == 0),
+            other => not((list_to_integer([O]) band 1) == 0)};
+        _ ->
+          #{owner => false,
+            group => false,
+            other => false}
+      end;
+    _ ->
+      #{owner => false,
+        group => false,
+        other => false}
+  end.
+% @doc
+% Return true if <tt>File</tt> is executable for <tt>Who</tt>, false otherwise
+% @end
+-spec is_executable(File :: file:filename(), Who :: owner | group | other | list()) -> true | false.
+is_executable(File, Who) when Who == owner;
+                              Who == group;
+                              Who == other ->
+  maps:get(Who, is_executable(File));
+is_executable(File, Who) when is_list(Who) ->
+  lists:foldl(fun(W, Acc) ->
+                  Acc or is_executable(File, W)
+              end, false, Who).
 
 %% @doc
 %% Return the given <tt>FilePath</tt> relatively to the <tt>FromPath</tt>.

@@ -264,7 +264,7 @@ pipecall([Call|Rest], Out) ->
 % Returns the result of applying Function in Module to Args. The applied
 % function must be exported from Module. The arity of the function is the length of Args.
 %
-% Return <tt>{error, undefined_function} if the applied function is not exported.
+% Return <tt>{error, undefined_function}</tt> if the applied function is not exported.
 % @end
 -spec call(Module :: module(), Function :: atom(), Args :: [term()]) -> term() | {error, undefined_function}.
 call(Module, Function, Args) ->

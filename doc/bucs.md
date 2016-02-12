@@ -9,7 +9,8 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
+Returns the result of applying Function in Module to Args.</td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
 Check if the given function exist.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
 Check if the given value is a string.</td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td>
 Return true if <tt>A</tt> match <tt>B</tt>.</td></tr><tr><td valign="top"><a href="#module_exist-1">module_exist/1</a></td><td></td></tr><tr><td valign="top"><a href="#module_exists-1">module_exists/1</a></td><td>
@@ -32,6 +33,21 @@ Convert the given term to string.</td></tr></table>
 ### apply/3 ###
 
 `apply(Module, Function, Args) -> any()`
+
+<a name="call-3"></a>
+
+### call/3 ###
+
+<pre><code>
+call(Module::module(), Function::atom(), Args::[term()]) -&gt; term() | {error, undefined_function}
+</code></pre>
+<br />
+
+
+Returns the result of applying Function in Module to Args. The applied 
+function must be exported from Module. The arity of the function is the length of Args.
+
+Return `{error, undefined_function}` if the applied function is not exported.
 
 <a name="compare_as_atom-2"></a>
 
