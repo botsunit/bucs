@@ -12,7 +12,8 @@ bucs_test_() ->
     ?_test(t_function_exists()),
     ?_test(t_function_doesnt_exists_in_module()),
     ?_test(t_function_doesnt_exists_cause_bad_module()),
-    ?_test(t_function_doesnt_exists_cause_private())
+    ?_test(t_function_doesnt_exists_cause_private()),
+    ?_test(t_is())
    ]}.
 
 setup() ->
@@ -87,5 +88,12 @@ t_function_doesnt_exists_cause_bad_module() ->
 t_function_doesnt_exists_cause_private() ->
   ?assertNot(bucs:function_exists(bucs,compare_as,3)).
 
-
+t_is() ->
+  ?assertNot(bucs:is_string([1, 2, 3])),
+  ?assertNot(bucs:is_string(hello)),
+  ?assert(bucs:is_string("Hello World")),
+  ?assertNot(bucs:is_kw_list("hello")),
+  ?assertNot(bucs:is_kw_list([1, 2, 3])),
+  ?assertNot(bucs:is_kw_list([{a, b}, {c, d}, {e, f, g}])),
+  ?assert(bucs:is_kw_list([{a, b}, {c, d}, {e, f}])).
 

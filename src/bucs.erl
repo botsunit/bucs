@@ -13,6 +13,7 @@
          function_exists/3,
          apply/3,
          is_string/1,
+         is_kw_list/1,
          compare_as_list/2,
          compare_as_string/2,
          compare_as_atom/2,
@@ -199,6 +200,16 @@ apply(Module, Function, Args) ->
 is_string(V) when is_list(V) ->
   io_lib:printable_list(V) orelse io_lib:printable_latin1_list(V) orelse io_lib:printable_unicode_list(V);
 is_string(_) -> false.
+
+% @doc
+% Wheck is the given value is a keyword list
+% @end
+is_kw_list(V) when is_list(V) ->
+  lists:all(fun
+              ({_, _}) -> true;
+              (_) -> false
+            end, V);
+is_kw_list(_) -> false.
 
 % @doc
 % Return true if <tt>A</tt> match <tt>B</tt>. false otherwise.
