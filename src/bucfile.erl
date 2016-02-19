@@ -144,7 +144,12 @@ do_copy(Source, Destination, Options) ->
       Dest = filename:join(Destination, Base),
       case filelib:is_dir(Source) of
         false ->
-          copyfile(Source, Dest, Options);
+          case filelib:is_dir(Destination) of
+            true ->
+              copyfile(Source, Dest, Options);
+            false ->
+              copyfile(Source, Destination, Options)
+          end;
         true ->
           _ = build_dir(Source, Dest, Options),
           SubFiles = sub_files(Source),
@@ -225,7 +230,7 @@ copyfile(Source, Destination, Options) ->
                         end
                     end, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
     {error, Reason} ->
-      error(Reason)
+      error(io_lib:format("~p -> ~p : ~p", [Source, Destination, Reason]))
   end.
 
 change_file_mode(_, _, default_file_info) ->
