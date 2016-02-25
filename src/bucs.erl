@@ -250,13 +250,13 @@ compare_as(Fun, V1, V2) ->
 % Mul = multiplication(Log, 7),
 % Res = addition(Mul, 7).
 %
-% % With bucs:pipecall/2 :
+% % With bucs:pipecall/1 :
 % Res = bucs:pipecall([
 %                      {fun math:pow/2, [7, 3]},
 %                      fun math:log/1,
 %                      {fun multiplication/2, [7]},
 %                      {fun addition/2, [7]}
-%                     ])).
+%                     ]).
 % </pre>
 % @end
 pipecall([{Call, Args}|Rest]) ->
