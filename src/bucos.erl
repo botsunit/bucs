@@ -21,6 +21,7 @@ run(Cmd) ->
 % <tt>Options</tt> may contain:
 % <ul>
 % <li><tt>stdout_on_error</tt> : To get standard output in the result, in case of error.</li>
+% <li><tt>display_stdout</tt> : Display stdout.</li>
 % <li><tt>{timeout, integer()}</tt> : To set a maximum time to wait for, before returning with a <tt>{error,timeout}</tt> result.</li>
 % <li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection</li>
 % </ul>
@@ -34,17 +35,23 @@ run(Cmd, Options) when is_list(Options) ->
     true ->
       Timeout = buclists:keyfind(timeout, 1, Options, ?TIMEOUT),
       StdoutOnError = lists:member(stdout_on_error, Options),
+      DisplayStdout = lists:member(display_stdout, Options),
       Port = erlang:open_port({spawn, bucs:to_string(Cmd)},[exit_status]),
-      loop(Port, [], Timeout, StdoutOnError);
+      loop(Port, [], Timeout, StdoutOnError, DisplayStdout);
     _ ->
       run_all(Cmd, Options, [])
   end;
 run(_,_) ->
   error(badarg).
 
-loop(Port, Data, Timeout, StdoutOnError) ->
+loop(Port, Data, Timeout, StdoutOnError, DisplayStdout) ->
   receive
-    {Port, {data, NewData}} -> loop(Port, Data++NewData, Timeout, StdoutOnError);
+    {Port, {data, NewData}} ->
+      if
+        DisplayStdout -> io:format("~s", [NewData]);
+        true -> ok
+      end,
+      loop(Port, Data++NewData, Timeout, StdoutOnError, DisplayStdout);
     {Port, {exit_status, 0}} -> {ok, Data};
     {Port, {exit_status, S}} ->
       if
