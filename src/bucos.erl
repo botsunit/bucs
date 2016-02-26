@@ -23,7 +23,9 @@ run(Cmd) ->
 % <li><tt>stdout_on_error</tt> : To get standard output in the result, in case of error.</li>
 % <li><tt>display_stdout</tt> : Display stdout.</li>
 % <li><tt>{timeout, integer()}</tt> : To set a maximum time to wait for, before returning with a <tt>{error,timeout}</tt> result.</li>
-% <li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection</li>
+% <li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection.</li>
+% <li><tt>{cd, string() | binary()}</tt> : Change directory before run command.</li>
+% <li><tt>{env, [{string(), string() | false}]}</tt> :  The environment of the started process is extended using the environment specifications.</li>
 % </ul>
 % Note: If more than one shell commands are "chained" in the given string, only the first one is executed.
 % @end
@@ -36,13 +38,22 @@ run(Cmd, Options) when is_list(Options) ->
       Timeout = buclists:keyfind(timeout, 1, Options, ?TIMEOUT),
       StdoutOnError = lists:member(stdout_on_error, Options),
       DisplayStdout = lists:member(display_stdout, Options),
-      Port = erlang:open_port({spawn, bucs:to_string(Cmd)},[exit_status]),
+      Port = erlang:open_port({spawn, bucs:to_string(Cmd)}, run_options(Options, [exit_status, stderr_to_stdout])),
       loop(Port, [], Timeout, StdoutOnError, DisplayStdout);
     _ ->
       run_all(Cmd, Options, [])
   end;
 run(_,_) ->
   error(badarg).
+
+run_options([], Acc) ->
+  Acc;
+run_options([CD = {cd, _}|Options], Acc) ->
+  run_options(Options, [CD|Acc]);
+run_options([ENV = {env, _}|Options], Acc) ->
+  run_options(Options, [ENV|Acc]);
+run_options([_|Options], Acc) ->
+  run_options(Options, Acc).
 
 loop(Port, Data, Timeout, StdoutOnError, DisplayStdout) ->
   receive
