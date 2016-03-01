@@ -30,8 +30,11 @@ Execute the given shell command, waiting at most for a given timeout before retu
 <tt>Options</tt> may contain:
 <ul>
 <li><tt>stdout_on_error</tt> : To get standard output in the result, in case of error.</li>
+<li><tt>display_stdout</tt> : Display stdout.</li>
 <li><tt>{timeout, integer()}</tt> : To set a maximum time to wait for, before returning with a <tt>{error,timeout}</tt> result.</li>
-<li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection</li>
+<li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection.</li>
+<li><tt>{cd, string() | binary()}</tt> : Change directory before run command.</li>
+<li><tt>{env, [{string(), string() | false}]}</tt> :  The environment of the started process is extended using the environment specifications.</li>
 </ul>
 Note: If more than one shell commands are "chained" in the given string, only the first one is executed.</td></tr></table>
 
@@ -90,9 +93,15 @@ Execute the given shell command, waiting at most for a given timeout before retu
 
 * `stdout_on_error` : To get standard output in the result, in case of error.
 
+* `display_stdout` : Display stdout.
+
 * `{timeout, integer()}` : To set a maximum time to wait for, before returning with a `{error,timeout}` result.
 
-* `{return, list|combined, all|last|integer()|[integer()]}` : To specify output collection
+* `{return, list|combined, all|last|integer()|[integer()]}` : To specify output collection.
+
+* `{cd, string() | binary()}` : Change directory before run command.
+
+* `{env, [{string(), string() | false}]}` :  The environment of the started process is extended using the environment specifications.
 
 
 Note: If more than one shell commands are "chained" in the given string, only the first one is executed.

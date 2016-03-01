@@ -22,7 +22,8 @@ Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_flo
 Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td> 
 Convert the given term to integer.</td></tr><tr><td valign="top"><a href="#to_list-1">to_list/1</a></td><td> 
 Convert the given term to list.</td></tr><tr><td valign="top"><a href="#to_string-1">to_string/1</a></td><td>
-Convert the given term to string.</td></tr></table>
+Convert the given term to string.</td></tr><tr><td valign="top"><a href="#to_term-1">to_term/1</a></td><td> 
+Convert the given value to term.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -150,13 +151,13 @@ Example:
  Mul = multiplication(Log, 7),
  Res = addition(Mul, 7).
 
- % With bucs:pipecall/2 :
+ % With bucs:pipecall/1 :
  Res = bucs:pipecall([
                       {fun math:pow/2, [7, 3]},
                       fun math:log/1,
                       {fun multiplication/2, [7]},
                       {fun addition/2, [7]}
-                     ])).
+                     ]).
 ```
 
 <a name="to_atom-1"></a>
@@ -261,4 +262,19 @@ Example:
 `to_string(V) -> any()`
 
 Convert the given term to string
+
+<a name="to_term-1"></a>
+
+### to_term/1 ###
+
+`to_term(Value) -> any()`
+
+
+Convert the given value to term
+
+Example
+
+```
+<p></p>
+```
 

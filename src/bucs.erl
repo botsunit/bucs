@@ -7,6 +7,7 @@
          to_binary/1,
          to_integer/1,
          to_float/1,
+         to_term/1,
          module_exist/1,
          module_exists/1,
          function_exist/3,
@@ -147,6 +148,26 @@ to_float(Value) when is_binary(Value) ->
   to_float(binary_to_list(Value));
 to_float(Value) when is_atom(Value) ->
   to_float(atom_to_list(Value)).
+
+% @doc
+% Convert the given value to term
+%
+% Example
+% <pre>
+%
+% </pre>
+% @end
+to_term(Value) ->
+  Value0 = to_string(Value),
+  Value1 = case lists:reverse(Value0) of
+         [$.|_] -> Value0;
+         _ -> Value0 ++ "."
+       end,
+  {ok, Tokens, _} = erl_scan:string(Value1),
+  case erl_parse:parse_term(Tokens) of
+    {ok, Term} -> {ok, Term};
+    {error, {_, _, Reason}} -> {error, Reason}
+  end.
 
 % @deprecated
 module_exist(Module) ->
