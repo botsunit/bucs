@@ -82,12 +82,13 @@ to_string(V) when is_atom(V);
                   is_integer(V);
                   is_float(V);
                   is_binary(V);
-                  is_bitstring(V);
-                  is_list(V) ->
+                  is_bitstring(V) ->
+  lists:flatten(to_list(V));
+to_string(V) when is_list(V) ->
   case is_string(V) of
     true -> V;
     false ->
-      lists:flatten(to_list(V))
+      lists:flatten(io_lib:format("~p", [V]))
   end;
 to_string(V) ->
   lists:flatten(io_lib:format("~p", [V])).
