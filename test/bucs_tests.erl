@@ -63,6 +63,9 @@ t_convert() ->
   ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]}},
                bucs:to_term("{hello, 123.45, 678, \"hello\", <<\"world\">>, [1,2,3,4]}")),
   ?assertEqual({ok, {1, {2, {3, {4}}}}}, bucs:to_term("{1, {2, {3, {4}}}}")),
+  ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]}},
+               bucs:to_term({hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]})),
+  ?assertEqual({ok, {1, {2, {3, {4}}}}}, bucs:to_term({1, {2, {3, {4}}}})),
   ?assertEqual(bucs:to_binary(
                  bucs:to_list(
                    bucs:to_atom(123.0))),

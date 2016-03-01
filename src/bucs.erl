@@ -58,6 +58,10 @@ to_atom(X) ->
 % "false" = bucs:to_list(false).
 % </pre>
 % @end
+to_list(true) ->
+  "true";
+to_list(false) ->
+  "false";
 to_list(V) when is_atom(V) ->
   atom_to_list(V);
 to_list(V) when is_list(V) ->
@@ -69,17 +73,24 @@ to_list(V) when is_float(V) ->
 to_list(V) when is_binary(V); is_bitstring(V) ->
   binary_to_list(V);
 to_list(V) when is_tuple(V) ->
-  [element(I, V) || I <- lists:seq(1, tuple_size(V))];
-to_list(true) ->
-  "true";
-to_list(false) ->
-  "false".
+  [element(I, V) || I <- lists:seq(1, tuple_size(V))].
 
 % @doc
 % Convert the given term to string
 % @end
+to_string(V) when is_atom(V);
+                  is_integer(V);
+                  is_float(V);
+                  is_binary(V);
+                  is_bitstring(V);
+                  is_list(V) ->
+  case is_string(V) of
+    true -> V;
+    false ->
+      lists:flatten(to_list(V))
+  end;
 to_string(V) ->
-  lists:flatten(to_list(V)).
+  lists:flatten(io_lib:format("~p", [V])).
 
 % @doc
 % Convert the given term to binary
