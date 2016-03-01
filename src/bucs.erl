@@ -84,14 +84,12 @@ to_string(V) when is_atom(V);
                   is_binary(V);
                   is_bitstring(V) ->
   lists:flatten(to_list(V));
-to_string(V) when is_list(V) ->
+to_string(V) ->
   case is_string(V) of
     true -> V;
     false ->
       lists:flatten(io_lib:format("~p", [V]))
-  end;
-to_string(V) ->
-  lists:flatten(io_lib:format("~p", [V])).
+  end.
 
 % @doc
 % Convert the given term to binary
