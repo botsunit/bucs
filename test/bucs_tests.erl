@@ -1,6 +1,9 @@
 -module(bucs_tests).
 
+-include("../include/bucs.hrl").
 -include_lib("eunit/include/eunit.hrl").
+
+-record(rec, {bar = "baz", camp = "spam"}).
 
 bucs_test_() ->
   {setup,
@@ -13,7 +16,8 @@ bucs_test_() ->
     ?_test(t_function_doesnt_exists_in_module()),
     ?_test(t_function_doesnt_exists_cause_bad_module()),
     ?_test(t_function_doesnt_exists_cause_private()),
-    ?_test(t_is())
+    ?_test(t_is()),
+    ?_test(t_convert_record())
    ]}.
 
 setup() ->
@@ -118,4 +122,10 @@ t_is() ->
   ?assertNot(bucs:is_kw_list([1, 2, 3])),
   ?assertNot(bucs:is_kw_list([{a, b}, {c, d}, {e, f, g}])),
   ?assert(bucs:is_kw_list([{a, b}, {c, d}, {e, f}])).
+
+t_convert_record() ->
+  ?assertMatch([{bar, "baz"}, {camp, "spam"}], ?record_to_list(rec, #rec{})),
+  ?assertMatch(#{bar := "baz", camp := "spam"}, ?record_to_map(rec, #rec{})),
+  ?assertMatch(#rec{bar = "baz", camp = "spam"}, ?list_to_record(rec, [{bar, "baz"}, {camp, "spam"}])),
+  ?assertMatch(#rec{bar = "baz", camp = "spam"}, ?map_to_record(rec, #{bar => "baz", camp => "spam"})).
 
