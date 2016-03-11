@@ -7,6 +7,7 @@ bucbinary_test_() ->
    fun setup/0, fun teardown/1,
    [
     ?_test(t_join())
+    , ?_test(t_trim())
    ]}.
 
 setup() ->
@@ -20,3 +21,14 @@ t_join() ->
                bucbinary:join([<<"hello">>, <<"world">>, <<"i">>, <<"love">>, <<"you">>],
                               <<",">>)).
 
+t_trim() ->
+  ?assertEqual(<<"hello world">>,
+               bucbinary:trim(<<"       hello world">>, left)),
+  ?assertEqual(<<"hello world">>,
+               bucbinary:trim(<<"hello world   ">>, right)),
+  ?assertEqual(<<"hello world  ">>,
+               bucbinary:trim(<<"       hello world  ">>, left)),
+  ?assertEqual(<<"  hello world">>,
+               bucbinary:trim(<<"  hello world   ">>, right)),
+  ?assertEqual(<<"hello world">>,
+               bucbinary:trim(<<"      hello world   ">>, both)).

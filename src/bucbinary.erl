@@ -1,7 +1,8 @@
 -module(bucbinary).
 
 -export([
-         join/2
+         join/2,
+         trim/2
         ]).
 
 %% @doc
@@ -27,4 +28,29 @@ join(List, Sep) when is_list(List), is_binary(Sep) ->
               end, <<>>, List);
 join(Bin, _) when is_binary(Bin) ->
   Bin.
+
+
+- spec trim(binary(), left | right | both) -> binary().
+trim(Binary, left) ->
+  trim_left(Binary);
+trim(Binary, right) ->
+  trim_right(Binary);
+trim(Binary, both) ->
+  trim_left(trim_right(Binary)).
+
+trim_left(<<C, Rest/binary>>) when C =:= 32 orelse
+                                   C =:= $\t ->
+  trim_left(Rest);
+trim_left(Binary) -> Binary.
+
+trim_right(Binary) ->
+  trim_right(Binary, size(Binary)-1).
+
+trim_right(Binary, Size) ->
+  case Binary of
+    <<Rest:Size/binary, C>> when C =:= 32 orelse C =:= $\t ->
+      trim_right(Rest, Size - 1);
+    Other ->
+      Other
+  end.
 
