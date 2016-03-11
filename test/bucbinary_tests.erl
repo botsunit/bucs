@@ -31,4 +31,7 @@ t_trim() ->
   ?assertEqual(<<"  hello world">>,
                bucbinary:trim(<<"  hello world   ">>, right)),
   ?assertEqual(<<"hello world">>,
-               bucbinary:trim(<<"      hello world   ">>, both)).
+               bucbinary:trim(<<"      hello world   ">>, both)),
+  ?assertEqual(<<"hello \n\r world">>,
+               bucbinary:trim(<<"  \r    hello \n\r world \n  ">>, both)).
+

@@ -38,7 +38,9 @@ trim(Binary, right) ->
 trim(Binary, both) ->
   trim_left(trim_right(Binary)).
 
-trim_left(<<C, Rest/binary>>) when C =:= 32 orelse
+trim_left(<<C, Rest/binary>>) when C =:= $\s orelse
+                                   C =:= $\n orelse
+                                   C =:= $\r orelse
                                    C =:= $\t ->
   trim_left(Rest);
 trim_left(Binary) -> Binary.
@@ -48,7 +50,10 @@ trim_right(Binary) ->
 
 trim_right(Binary, Size) ->
   case Binary of
-    <<Rest:Size/binary, C>> when C =:= 32 orelse C =:= $\t ->
+    <<Rest:Size/binary, C>> when C =:= $\s
+                                 orelse C =:= $\t
+                                 orelse C =:= $\n
+                                 orelse C =:= $\r ->
       trim_right(Rest, Size - 1);
     Other ->
       Other
