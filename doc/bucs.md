@@ -9,7 +9,7 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-2">apply/2</a></td><td></td></tr><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#apply-4">apply/4</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
 Returns the result of applying Function in Module to Args.</td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
 Check if the given function exist.</td></tr><tr><td valign="top"><a href="#is_kw_list-1">is_kw_list/1</a></td><td>
 Wheck is the given value is a keyword list.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
@@ -30,11 +30,23 @@ Convert the given value to term.</td></tr></table>
 
 ## Function Details ##
 
+<a name="apply-2"></a>
+
+### apply/2 ###
+
+`apply(Fun, Args) -> any()`
+
 <a name="apply-3"></a>
 
 ### apply/3 ###
 
-`apply(Module, Function, Args) -> any()`
+`apply(Fun, Args, Default) -> any()`
+
+<a name="apply-4"></a>
+
+### apply/4 ###
+
+`apply(Module, Function, Args, Default) -> any()`
 
 <a name="call-3"></a>
 

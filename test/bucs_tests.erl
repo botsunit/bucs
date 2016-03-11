@@ -1,4 +1,5 @@
 -module(bucs_tests).
+-export([addition/2]).
 
 -include("../include/bucs.hrl").
 -include_lib("eunit/include/eunit.hrl").
@@ -16,6 +17,7 @@ bucs_test_() ->
     ?_test(t_function_doesnt_exists_in_module()),
     ?_test(t_function_doesnt_exists_cause_bad_module()),
     ?_test(t_function_doesnt_exists_cause_private()),
+    ?_test(t_apply()),
     ?_test(t_is()),
     ?_test(t_convert_record())
    ]}.
@@ -113,6 +115,16 @@ t_function_doesnt_exists_cause_bad_module() ->
 
 t_function_doesnt_exists_cause_private() ->
   ?assertNot(bucs:function_exists(bucs,compare_as,3)).
+
+t_apply() ->
+  ?assertEqual({ok, 5}, bucs:apply(fun addition/2, [3, 2])),
+  ?assertEqual({ok, 21}, bucs:apply(fun multiplication/2, [3, 7])),
+  ?assertEqual(error, bucs:apply(fun undef:missing/2, [3, 7])),
+  ?assertEqual(missing, bucs:apply(fun undef:missing/2, [3, 7], missing)),
+  ?assertEqual({ok, 5}, bucs:apply(?MODULE, addition, [2, 3])),
+  ?assertEqual(error, bucs:apply(?MODULE, missing_function, [2, 3])),
+  ?assertEqual(missing, bucs:apply(?MODULE, missing_function, [2, 3], missing)),
+  ?assertEqual(5, bucs:apply(?MODULE, addition, [2, 3], error)).
 
 t_is() ->
   ?assertNot(bucs:is_string([1, 2, 3])),

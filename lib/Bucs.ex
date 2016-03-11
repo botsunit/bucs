@@ -36,8 +36,14 @@ defmodule Bucs do
 	def unquote(:"function_exists")(arg1, arg2, arg3) do
 		:erlang.apply(:"bucs", :"function_exists", [arg1, arg2, arg3])
 	end
+	def unquote(:"apply")(arg1, arg2, arg3, arg4) do
+		:erlang.apply(:"bucs", :"apply", [arg1, arg2, arg3, arg4])
+	end
 	def unquote(:"apply")(arg1, arg2, arg3) do
 		:erlang.apply(:"bucs", :"apply", [arg1, arg2, arg3])
+	end
+	def unquote(:"apply")(arg1, arg2) do
+		:erlang.apply(:"bucs", :"apply", [arg1, arg2])
 	end
 	def unquote(:"is_string")(arg1) do
 		:erlang.apply(:"bucs", :"is_string", [arg1])

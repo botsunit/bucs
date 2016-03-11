@@ -12,7 +12,9 @@
          module_exists/1,
          function_exist/3,
          function_exists/3,
+         apply/4,
          apply/3,
+         apply/2,
          is_string/1,
          is_kw_list/1,
          compare_as_list/2,
@@ -217,9 +219,35 @@ function_exists(Module, Function, Arity) ->
 
 % @doc
 % @end
-apply(Module, Function, Args) ->
+apply(Module, Function, Args, Default) ->
+  case function_exists(Module, Function, length(Args)) of
+    true ->
+      erlang:apply(Module, Function, Args);
+    false ->
+      Default
+  end.
+
+% @doc
+% @end
+apply(Fun, Args, Default) when is_function(Fun),
+                               is_list(Args) ->
+  case bucs:apply(Fun, Args) of
+    {ok, Result} -> Result;
+    error -> Default
+  end;
+apply(Module, Function, Args) when is_atom(Module),
+                                   is_atom(Function),
+                                   is_list(Args) ->
   try
     {ok, erlang:apply(Module, Function, Args)}
+  catch
+    _:_ ->
+      error
+  end.
+
+apply(Fun, Args) ->
+  try
+    {ok, erlang:apply(Fun, Args)}
   catch
     _:_ ->
       error
