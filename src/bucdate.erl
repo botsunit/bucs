@@ -60,12 +60,16 @@ nif_stub_error(Line) ->
     erlang:nif_error({nif_not_loaded,module,?MODULE,line,Line}).
 %% @hidden
 init() ->
-  NIF = filename:join(buccode:priv_dir(bucs), bucs),
-  case filelib:is_file(NIF) of
-    true ->
-      erlang:load_nif(NIF, 0);
-    false ->
-      ok
+  try
+    NIF = filename:join(buccode:priv_dir(bucs), bucs),
+    case filelib:is_file(NIF) of
+      true ->
+        erlang:load_nif(NIF, 0);
+      false ->
+        ok
+    end
+  catch
+    _:_ -> ok
   end.
 
 %% @doc
