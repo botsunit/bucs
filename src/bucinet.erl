@@ -30,6 +30,8 @@ to_ip(IP) when is_list(IP) ->
     _:_ ->
       error
   end;
+to_ip({_, _, _, _} = IP) ->
+  IP;
 to_ip(_) ->
   error.
 
