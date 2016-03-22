@@ -127,9 +127,17 @@ to_binary(V) ->
 to_integer(I) when is_integer(I) ->
   I;
 to_integer(I) when is_list(I) ->
-  list_to_integer(I);
+  try
+    list_to_integer(I)
+  catch
+    _:_ -> to_integer(to_float(I))
+  end;
 to_integer(I) when is_binary(I); is_bitstring(I) ->
-  binary_to_integer(I);
+  try
+    binary_to_integer(I)
+  catch
+    _:_ -> to_integer(to_float(I))
+  end;
 to_integer(I) when is_atom(I) ->
   to_integer(atom_to_list(I));
 to_integer(I) when is_float(I) ->
