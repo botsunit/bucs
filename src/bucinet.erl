@@ -45,7 +45,10 @@ ip_to_string({A, B, C, D}) when A >= 0, A =< 255,
                                 D >= 0, D =< 255 ->
   lists:flatten(io_lib:format("~B.~B.~B.~B", [A, B, C, D]));
 ip_to_string(IP) when is_list(IP) ->
-  IP;
+  case is_ip(IP) of
+    true -> IP;
+    false -> error
+  end;
 ip_to_string(_) ->
   error.
 
