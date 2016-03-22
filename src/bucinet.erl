@@ -44,6 +44,8 @@ ip_to_string({A, B, C, D}) when A >= 0, A =< 255,
                                 C >= 0, C =< 255,
                                 D >= 0, D =< 255 ->
   lists:flatten(io_lib:format("~B.~B.~B.~B", [A, B, C, D]));
+ip_to_string(IP) when is_list(IP) ->
+  IP;
 ip_to_string(_) ->
   error.
 
@@ -51,6 +53,8 @@ ip_to_string(_) ->
 % Return a binary for a given <tt>inet:ip4_address()</tt>
 % @end
 -spec ip_to_binary(inet:ip4_address()) -> binary() | error.
+ip_to_binary(IP) when is_binary(IP) ->
+  IP;
 ip_to_binary(IP) ->
   case ip_to_string(IP) of
     error -> error;
