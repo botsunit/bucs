@@ -1,12 +1,15 @@
 -module(bucmime).
 
--export([type/1]).
+-export([type/1, exploded/1]).
 
 type(File) ->
   case filename:extension(File) of
     <<>> -> <<"application/octet-stream">>;
     Ext -> mime(Ext)
   end.
+
+exploded(File) ->
+  binary:split(type(File), <<"/">>).
 
 mime(<<".ez">>) -> <<"application/andrew-inset">>;
 mime(<<".anx">>) -> <<"application/annodex">>;
