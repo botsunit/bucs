@@ -9,7 +9,10 @@ type(File) ->
   end.
 
 exploded(File) ->
-  binary:split(type(File), <<"/">>).
+  case binary:split(type(File), <<"/">>) of
+    [Type, Subtype] -> {Type, Subtype};
+    _ -> {<<"application">>, <<"octet-stream">>}
+  end.
 
 mime(<<".ez">>) -> <<"application/andrew-inset">>;
 mime(<<".anx">>) -> <<"application/annodex">>;
