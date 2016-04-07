@@ -4,6 +4,7 @@
          pipemap/2,
          keyfind/3,
          keyfind/4,
+         keyfind/5,
          keyufind/3,
          keyufind/4,
          delete_if/2,
@@ -40,7 +41,17 @@ keyufind(Key, N, TupleList) ->
 keyfind(Key, N, TupleList, Default) ->
   case lists:keyfind(Key, N, TupleList) of
     {Key, Value} -> Value;
-    false -> Default
+    false -> Default;
+    Tuple -> Tuple
+  end.
+
+keyfind(Key, N, TupleList, M, Default) ->
+  case lists:keyfind(Key, N, TupleList) of
+    false -> Default;
+    Tuple -> if
+               tuple_size(Tuple) >= M -> element(M, Tuple);
+               true -> Default
+             end
   end.
 
 % @doc
