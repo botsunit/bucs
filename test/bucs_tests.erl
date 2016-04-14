@@ -136,6 +136,7 @@ t_is() ->
   ?assertNot(bucs:is_string([1, 2, 3])),
   ?assertNot(bucs:is_string(hello)),
   ?assert(bucs:is_string("Hello World")),
+  ?assertNot(bucs:is_string(["hello world"])),
   ?assertNot(bucs:is_kw_list("hello")),
   ?assertNot(bucs:is_kw_list([1, 2, 3])),
   ?assertNot(bucs:is_kw_list([{a, b}, {c, d}, {e, f, g}])),
