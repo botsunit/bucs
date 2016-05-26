@@ -2,9 +2,9 @@
 
 # Bots Unit Commons #
 
-Copyright (c) 2015 Bots Unit
+Copyright (c) 2015, 2016 Bots Unit
 
-__Version:__ 1.0.0
+__Version:__ 0.0.2
 
 __Authors:__ Gregoire Lejeune ([`gregoire.lejeune@botsunit.com`](mailto:gregoire.lejeune@botsunit.com)), Mathias Franck ([`mathias.franck@botsunit.com`](mailto:mathias.franck@botsunit.com)).
 
@@ -12,7 +12,7 @@ __Authors:__ Gregoire Lejeune ([`gregoire.lejeune@botsunit.com`](mailto:gregoire
 
 ## Licence ##
 
-Copyright (c) 2015, Bots Unit<br />
+Copyright (c) 2015, 2016, Bots Unit<br />
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:

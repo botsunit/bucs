@@ -61,7 +61,7 @@ Return a binary for a given `inet:ip4_address()`
 ### ip_to_string/1 ###
 
 <pre><code>
-ip_to_string(X1::<a href="inet.md#type-ip4_address">inet:ip4_address()</a>) -&gt; string() | error
+ip_to_string(IP::<a href="inet.md#type-ip4_address">inet:ip4_address()</a>) -&gt; string() | error
 </code></pre>
 <br />
 
