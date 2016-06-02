@@ -17,4 +17,6 @@ xrefr
 *.o
 *.so
 c_src/env.mk
-test/TEST-*.xml
+test/eunit/
+_build/
+
