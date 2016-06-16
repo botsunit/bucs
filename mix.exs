@@ -14,7 +14,7 @@ defmodule Bucs.Mixfile do
 
   def application do
     [
-       applications: [:kernel, :stdlib],
+       applications: [],
        env: [],
        mod: {:bucs_app, []}
     ]
