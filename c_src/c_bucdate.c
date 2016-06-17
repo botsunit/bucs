@@ -1,3 +1,4 @@
+#define _BSD_SOURCE
 #include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
