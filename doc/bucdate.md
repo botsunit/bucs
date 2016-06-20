@@ -76,11 +76,15 @@ now() = {integer(), integer(), integer()}
 Add 1 unit to the given <tt>DateTime</tt>.</td></tr><tr><td valign="top"><a href="#add-3">add/3</a></td><td>
 Add <tt>N</tt> units to the given <tt>DateTime</tt>.</td></tr><tr><td valign="top"><a href="#compare-2">compare/2</a></td><td>
 Compate <tt>Date1</tt> and <tt>Date2</tt></td></tr><tr><td valign="top"><a href="#format-1">format/1</a></td><td>format current local time as Format.</td></tr><tr><td valign="top"><a href="#format-2">format/2</a></td><td>format Date as Format.</td></tr><tr><td valign="top"><a href="#local_timezone-0">local_timezone/0</a></td><td>
-Return the local timezone.</td></tr><tr><td valign="top"><a href="#nparse-1">nparse/1</a></td><td>parses the datetime from a string into 'now' format.</td></tr><tr><td valign="top"><a href="#parse-1">parse/1</a></td><td>parses the datetime from a string.</td></tr><tr><td valign="top"><a href="#parse-2">parse/2</a></td><td>parses the datetime from a string.</td></tr><tr><td valign="top"><a href="#to_iso8601-1">to_iso8601/1</a></td><td>
+Return the local timezone.</td></tr><tr><td valign="top"><a href="#nparse-1">nparse/1</a></td><td>parses the datetime from a string into 'now' format.</td></tr><tr><td valign="top"><a href="#parse-1">parse/1</a></td><td>parses the datetime from a string.</td></tr><tr><td valign="top"><a href="#parse-2">parse/2</a></td><td>parses the datetime from a string.</td></tr><tr><td valign="top"><a href="#timezone_offset-0">timezone_offset/0</a></td><td>
+Returns the time difference between UTC time and local time, in minutes.</td></tr><tr><td valign="top"><a href="#to_iso8601-1">to_iso8601/1</a></td><td>
 Return date using iso8601 format.</td></tr><tr><td valign="top"><a href="#today-0">today/0</a></td><td>
-Return now local datetime.</td></tr><tr><td valign="top"><a href="#tomorrow-0">tomorrow/0</a></td><td>
-Return tomorrow local datetime.</td></tr><tr><td valign="top"><a href="#yesterday-0">yesterday/0</a></td><td>
-Return yesterday local datetime.</td></tr></table>
+return now local datetime.</td></tr><tr><td valign="top"><a href="#today_utc-0">today_utc/0</a></td><td>
+return now UTC datetime.</td></tr><tr><td valign="top"><a href="#tomorrow-0">tomorrow/0</a></td><td>
+return tomorrow local datetime.</td></tr><tr><td valign="top"><a href="#tomorrow_utc-0">tomorrow_utc/0</a></td><td>
+return tomorrow UTC datetime.</td></tr><tr><td valign="top"><a href="#yesterday-0">yesterday/0</a></td><td>
+return yesterday local datetime.</td></tr><tr><td valign="top"><a href="#yesterday_utc-0">yesterday_utc/0</a></td><td>
+return yesterday UTC datetime.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -183,6 +187,14 @@ parse(Date::string(), Now::<a href="calendar.md#type-datetime">calendar:datetime
 
 parses the datetime from a string
 
+<a name="timezone_offset-0"></a>
+
+### timezone_offset/0 ###
+
+`timezone_offset() -> any()`
+
+Returns the time difference between UTC time and local time, in minutes.
+
 <a name="to_iso8601-1"></a>
 
 ### to_iso8601/1 ###
@@ -203,7 +215,18 @@ today() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
 </code></pre>
 <br />
 
-Return now local datetime.
+return now local datetime.
+
+<a name="today_utc-0"></a>
+
+### today_utc/0 ###
+
+<pre><code>
+today_utc() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
+</code></pre>
+<br />
+
+return now UTC datetime.
 
 <a name="tomorrow-0"></a>
 
@@ -214,7 +237,18 @@ tomorrow() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
 </code></pre>
 <br />
 
-Return tomorrow local datetime.
+return tomorrow local datetime.
+
+<a name="tomorrow_utc-0"></a>
+
+### tomorrow_utc/0 ###
+
+<pre><code>
+tomorrow_utc() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
+</code></pre>
+<br />
+
+return tomorrow UTC datetime.
 
 <a name="yesterday-0"></a>
 
@@ -225,5 +259,16 @@ yesterday() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
 </code></pre>
 <br />
 
-Return yesterday local datetime.
+return yesterday local datetime.
+
+<a name="yesterday_utc-0"></a>
+
+### yesterday_utc/0 ###
+
+<pre><code>
+yesterday_utc() -&gt; <a href="calendar.md#type-datetime">calendar:datetime()</a>
+</code></pre>
+<br />
+
+return yesterday UTC datetime.
 

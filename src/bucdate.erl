@@ -22,30 +22,30 @@
 %% See tests at bottom for examples
 -module(bucdate).
 -author("Dale Harvey <dale@hypernumbers.com>").
+-author("Gregoire Lejeune <gregoire.lejeune@gmail.com>").
 
 -export([to_iso8601/1]).
 -export([add/2, add/3]).
 -export([today/0, yesterday/0, tomorrow/0]).
+-export([today_utc/0, yesterday_utc/0, tomorrow_utc/0]).
 -export([compare/2]).
 -export([format/1, format/2]).
 -export([parse/1, parse/2]).
 -export([nparse/1]).
--export([local_timezone/0]).
-
--on_load(init/0).
+-export([local_timezone/0, timezone_offset/0]).
 
 %% These are used exclusively as guards and so the function like
 %% defines make sense
--define( is_num(X), (X >= $0 andalso X =< $9) ).
--define( is_meridian(X), (X==[] orelse X==[am] orelse X==[pm]) ).
--define( is_us_sep(X), ( X==$/) ).
--define( is_world_sep(X), ( X==$-) ).
+-define(is_num(X), (X >= $0 andalso X =< $9)).
+-define(is_meridian(X), (X==[] orelse X==[am] orelse X==[pm])).
+-define(is_us_sep(X), ( X==$/)).
+-define(is_world_sep(X), ( X==$-)).
 
--define( MONTH_TAG, month ).
--define( is_year(X), (is_integer(X) andalso X > 31) ).
--define( is_day(X), (is_integer(X) andalso X =< 31) ).
--define( is_hinted_month(X), (is_tuple(X) andalso size(X)=:=2 andalso element(1,X)=:=?MONTH_TAG) ).
--define( is_month(X), ( (is_integer(X) andalso X =< 12) orelse ?is_hinted_month(X) ) ).
+-define(MONTH_TAG, month).
+-define(is_year(X), (is_integer(X) andalso X > 31)).
+-define(is_day(X), (is_integer(X) andalso X =< 31)).
+-define(is_hinted_month(X), (is_tuple(X) andalso size(X)=:=2 andalso element(1,X)=:=?MONTH_TAG)).
+-define(is_month(X), ((is_integer(X) andalso X =< 12) orelse ?is_hinted_month(X))).
 
 -define(GREGORIAN_SECONDS_1970, 62167219200).
 
@@ -54,29 +54,31 @@
 -type dt_units() :: seconds | minutes | hours | days | months | years.
 -type dt_unit() :: second | minute | hour | day | month | year.
 
--define(nif_stub, nif_stub_error(?LINE)).
-%% @hidden
-nif_stub_error(Line) ->
-    erlang:nif_error({nif_not_loaded,module,?MODULE,line,Line}).
-%% @hidden
-init() ->
-  try
-    NIF = filename:join(buccode:priv_dir(bucs), bucs),
-    case filelib:is_file(NIF) of
-      true ->
-        erlang:load_nif(NIF, 0);
-      false ->
-        ok
-    end
-  catch
-    _:_ -> ok
-  end.
-
 %% @doc
 %% Return the local timezone
 %% @end
 local_timezone() ->
-    ?nif_stub.
+  Offset = timezone_offset(),
+  M = abs(Offset) rem 60,
+  H = bucs:to_integer((abs(Offset) - M) / 60),
+  if
+    Offset > 0 ->
+      lists:flatten(io_lib:format("+~2..0w:~2..0w", [H, M]));
+    true ->
+      lists:flatten(io_lib:format("-~2..0w:~2..0w", [H, M]))
+  end.
+
+%% @doc
+%% Returns the time difference between UTC time and local time, in minutes.
+%% @end
+timezone_offset() ->
+  {{_, {LH, LM, LS}}, {_, {GH, GM, GS}}} = {bucdate:today(), bucdate:today_utc()},
+  if
+    LS =/= GS ->
+      timezone_offset();
+    true ->
+      (LH - GH) * 60 + (LM - GM)
+  end.
 
 %% @doc
 %% Add <tt>N</tt> units to the given <tt>DateTime</tt>.
@@ -132,22 +134,40 @@ add(Date, N)  ->
     add(Date, N, days).
 
 % @doc
-% Return now local datetime.
+% return now local datetime.
 % @end
 -spec today() -> calendar:datetime().
 today() -> erlang:localtime().
 
 % @doc
-% Return tomorrow local datetime.
+% return tomorrow local datetime.
 % @end
 -spec tomorrow() -> calendar:datetime().
 tomorrow() -> add(today(), 1).
 
 % @doc
-% Return yesterday local datetime.
+% return yesterday local datetime.
 % @end
 -spec yesterday() -> calendar:datetime().
 yesterday() -> add(today(), -1).
+
+% @doc
+% return now UTC datetime.
+% @end
+-spec today_utc() -> calendar:datetime().
+today_utc() -> erlang:universaltime().
+
+% @doc
+% return tomorrow UTC datetime.
+% @end
+-spec tomorrow_utc() -> calendar:datetime().
+tomorrow_utc() -> add(today_utc(), 1).
+
+% @doc
+% return yesterday UTC datetime.
+% @end
+-spec yesterday_utc() -> calendar:datetime().
+yesterday_utc() -> add(today_utc(), -1).
 
 % @doc
 % Compate <tt>Date1</tt> and <tt>Date2</tt>

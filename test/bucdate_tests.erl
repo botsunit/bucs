@@ -20,6 +20,7 @@ bucdate_test_() ->
     , ?_test(t_iso())
     , ?_test(t_ms())
     , ?_test(t_zulu())
+    , ?_test(t_timezone())
    ]}.
 
 setup() ->
@@ -268,4 +269,28 @@ t_zulu() ->
                "2001-03-10T19:16:17"),
   ?assertEqual(bucdate:format("Y-m-d\\TH:i:s",bucdate:nparse("2001-03-10T15:16:17-04:00")),
                "2001-03-10T19:16:17").
+
+t_timezone() ->
+       meck:new(bucdate, [passthrough]),
+       meck:expect(bucdate, today, 0, {date, {12, 0, 0}}),
+       meck:expect(bucdate, today_utc, 0, {date, {10, 0, 0}}),
+       ?assertEqual("+02:00", bucdate:local_timezone()),
+       ?assertEqual(120, bucdate:timezone_offset()),
+
+       meck:expect(bucdate, today, 0, {date, {10, 0, 0}}),
+       meck:expect(bucdate, today_utc, 0, {date, {12, 0, 0}}),
+       ?assertEqual("-02:00", bucdate:local_timezone()),
+       ?assertEqual(-120, bucdate:timezone_offset()),
+
+       meck:expect(bucdate, today, 0, {date, {11, 30, 0}}),
+       meck:expect(bucdate, today_utc, 0, {date, {10, 0, 0}}),
+       ?assertEqual("+01:30", bucdate:local_timezone()),
+       ?assertEqual(90, bucdate:timezone_offset()),
+
+       meck:expect(bucdate, today, 0, {date, {10, 30, 0}}),
+       meck:expect(bucdate, today_utc, 0, {date, {12, 0, 0}}),
+       ?assertEqual("-01:30", bucdate:local_timezone()),
+       ?assertEqual(-90, bucdate:timezone_offset()),
+
+       meck:unload(bucdate).
 
