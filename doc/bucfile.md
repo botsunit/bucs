@@ -13,9 +13,10 @@
 [preserve_file_info, recursive])</tt></a>.</td></tr><tr><td valign="top"><a href="#copy-3">copy/3</a></td><td>
 Copy a <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#copyfile-2">copyfile/2</a></td><td>Equivalent to <a href="#copyfile-3"><tt>copyfile(Source, Destination, [preserve_file_info])</tt></a>.</td></tr><tr><td valign="top"><a href="#copyfile-3">copyfile/3</a></td><td>
 Copy file <tt>Source</tt> to a <tt>Destination</tt></td></tr><tr><td valign="top"><a href="#expand_path-1">expand_path/1</a></td><td>
-Expand the given path.</td></tr><tr><td valign="top"><a href="#is_executable-1">is_executable/1</a></td><td>
+Expand the given path.</td></tr><tr><td valign="top"><a href="#is_broken-1">is_broken/1</a></td><td></td></tr><tr><td valign="top"><a href="#is_executable-1">is_executable/1</a></td><td>
 Return true if <tt>File</tt> is executable, false otherwise.</td></tr><tr><td valign="top"><a href="#is_executable-2">is_executable/2</a></td><td>
-Return true if <tt>File</tt> is executable for <tt>Who</tt>, false otherwise.</td></tr><tr><td valign="top"><a href="#make_dir-1">make_dir/1</a></td><td>
+Return true if <tt>File</tt> is executable for <tt>Who</tt>, false otherwise.</td></tr><tr><td valign="top"><a href="#is_symlink-1">is_symlink/1</a></td><td>
+Return true if <tt>Path</tt> is a symlink, false otherwise.</td></tr><tr><td valign="top"><a href="#make_dir-1">make_dir/1</a></td><td>
 Create the given directory if it not exist.</td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td>Equivalent to <a href="#match-3"><tt>match(Path, Exp, [])</tt></a>.</td></tr><tr><td valign="top"><a href="#match-3">match/3</a></td><td>
 Return true if the <tt>Path</tt> match the <tt>Expression</tt></td></tr><tr><td valign="top"><a href="#normalize_path-1">normalize_path/1</a></td><td>
 Normalize the given path.</td></tr><tr><td valign="top"><a href="#realpath-1">realpath/1</a></td><td>
@@ -112,6 +113,12 @@ Example:
   "/home/user" = bucfile:expand_path("~").<<"/home/user">> = bucfile:expand_path(<<"~">>).
 ```
 
+<a name="is_broken-1"></a>
+
+### is_broken/1 ###
+
+`is_broken(Path) -> any()`
+
 <a name="is_executable-1"></a>
 
 ### is_executable/1 ###
@@ -130,6 +137,14 @@ is_executable(File::<a href="file.md#type-filename">file:filename()</a>, Who::ow
 <br />
 
 Return true if `File` is executable for `Who`, false otherwise
+
+<a name="is_symlink-1"></a>
+
+### is_symlink/1 ###
+
+`is_symlink(Path) -> any()`
+
+Return true if `Path` is a symlink, false otherwise
 
 <a name="make_dir-1"></a>
 

@@ -17,7 +17,9 @@
          match/2,
          match/3,
          is_executable/1,
-         is_executable/2
+         is_executable/2,
+         is_symlink/1,
+         is_broken/1
         ]).
 -include_lib("kernel/include/file.hrl").
 
@@ -217,20 +219,25 @@ copyfile(Source, Destination) ->
 %% </ul>
 %% @end
 copyfile(Source, Destination, Options) ->
-  case file:copy(Source, Destination) of
-    {ok, _} ->
-      lists:foreach(fun(Option) ->
-                        case lists:member(Option, Options) of
-                          true -> change_file_mode(Source, Destination, Option);
-                          false ->
-                            case lists:keyfind(Option, 1, Options) of
-                              false -> ok;
-                              Tuple -> change_file_mode(Source, Destination, Tuple)
+  case (is_symlink(Source) andalso (not is_broken(Source))) orelse (not is_symlink(Source)) of
+    true ->
+      case file:copy(Source, Destination) of
+        {ok, _} ->
+          lists:foreach(fun(Option) ->
+                            case lists:member(Option, Options) of
+                              true -> change_file_mode(Source, Destination, Option);
+                              false ->
+                                case lists:keyfind(Option, 1, Options) of
+                                  false -> ok;
+                                  Tuple -> change_file_mode(Source, Destination, Tuple)
+                                end
                             end
-                        end
-                    end, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
-    {error, Reason} ->
-      error(io_lib:format("~p -> ~p : ~p", [Source, Destination, Reason]))
+                        end, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
+        {error, Reason} ->
+          error(io_lib:format("~p -> ~p : ~p", [Source, Destination, Reason]))
+      end;
+    false ->
+      ok
   end.
 
 change_file_mode(_, _, default_file_info) ->
@@ -433,6 +440,32 @@ match(Path, Expression, Options) ->
   case re:run(Path2, Expression6) of
     nomatch -> false;
     _ -> true
+  end.
+
+%% @doc
+%% Return true if <tt>Path</tt> is a symlink, false otherwise
+%% @end
+is_symlink(Path) ->
+  case file:read_link_info(Path) of
+    {ok, #file_info{type = symlink}} ->
+      true;
+    _ ->
+      false
+  end.
+
+%% @doc
+%% @end
+is_broken(Path) ->
+  case is_symlink(Path) of
+    true ->
+      case file:read_link_info(Path) of
+        {ok, #file_info{access = Access}} when Access =/= none, Access =/= undefined ->
+          false;
+        _ ->
+          true
+      end;
+    false ->
+      false
   end.
 
 % private
