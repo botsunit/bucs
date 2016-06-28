@@ -35,5 +35,5 @@ distclean-ex: distclean
 	@rm -f mix.lock
 
 distclean:
-	@rm -rf _build test/eunit deps rebar.lock mix.lock
+	@rm -rf _build test/eunit deps
 
