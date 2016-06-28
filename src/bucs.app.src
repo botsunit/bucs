@@ -1,8 +1,13 @@
 {application, bucs, [
-	{description, "Bots Unit Commons"},
-	{vsn, "0.0.3"},
-	{modules, []},
-	{registered, []},
-	{applications, [kernel,stdlib]},
-  {mod, {bucs_app, []}}
+	  {description, "Bots Unit Commons"}
+	, {vsn, "0.1.0"}
+	, {modules, []}
+	, {registered, []}
+	, {applications, [kernel,stdlib]}
+  , {mod, {bucs_app, []}}
+
+  , {maintainers, ["Gregoire Lejeune", "Mathias Franck"]}
+  , {licenses, ["BSD-3"]}
+  , {links, [{"Github", "https://github.com/botsunit/bucs"}]}
+  , {build_tools, ["rebar3", "mix", "make"]}
 ]}.

@@ -1,8 +1,17 @@
 .PHONY: doc
 REBAR = ./rebar3
+MIX = mix
 
-compile:
+compile-erl:
 	@$(REBAR) compile
+
+compile-ex: elixir
+	@$(MIX) deps.get
+	@$(MIX) compile
+
+elixir:
+	@$(REBAR) elixir generate_mix
+	@$(REBAR) elixir generate_lib
 
 tests:
 	@$(REBAR) eunit
@@ -10,15 +19,21 @@ tests:
 doc:
 	@$(REBAR) as doc edoc
 
-elixir:
-	@$(REBAR) elixir generate_mix
-	@$(REBAR) elixir generate_lib
+dist: dist-ex dist-erl doc
 
-dist: compile tests elixir doc
+release: dist-ex dist-erl
+	@$(REBAR) hex publish
+
+dist-erl: distclean-erl compile-erl tests
+
+distclean-erl: distclean
+	@rm -f rebar.lock
+
+dist-ex: distclean-ex compile-ex
+
+distclean-ex: distclean
+	@rm -f mix.lock
 
 distclean:
-	@rm -rf _build rebar.lock mix.lock test/eunit
-
-dev: compile
-	$(verbose) erl -pa _build/default/lib/*/ebin _build/default/lib/*/include
+	@rm -rf _build test/eunit deps rebar.lock mix.lock
 
