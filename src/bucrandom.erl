@@ -14,6 +14,18 @@
 -module(bucrandom).
 -behaviour(gen_server).
 -define(SERVER, ?MODULE).
+-define(RAND, begin
+                case code:ensure_loaded(rand) of
+                  {module, rand} -> rand;
+                  _ -> random
+                end
+              end).
+-define(SEED_STATE, begin
+                      case code:ensure_loaded(rand) of
+                        {module, rand} -> exs1024;
+                        _ -> erlang:system_time(micro_seconds)
+                      end
+                    end).
 
 -export([start_link/0]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
@@ -48,7 +60,7 @@ randstr(Length) ->
 
 % @hidden
 init(Args) ->
-  _ = random:seed(erlang:system_time(micro_seconds)),
+  _ = ?RAND:seed(?SEED_STATE),
   {ok, Args}.
 
 % @hidden
@@ -78,10 +90,11 @@ code_change(_OldVsn, State, _Extra) ->
 -define(CHARS, "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890").
 
 private_randstr(Size) ->
-  lists:flatten([lists:sublist(?CHARS, random:uniform(length(?CHARS)), 1) || _ <- lists:seq(1, Size)]).
+  lists:flatten([lists:sublist(?CHARS, ?RAND:uniform(length(?CHARS)), 1) || _ <- lists:seq(1, Size)]).
 
 ensure_started() ->
   case [A || {A, _, _} <- application:which_applications(), A =:= bucs] of
     [] -> application:ensure_all_started(bucs);
     [bucs] -> ok
   end.
+
