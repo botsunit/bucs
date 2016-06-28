@@ -1,6 +1,6 @@
 {application, bucs, [
 	  {description, "Bots Unit Commons"}
-	, {vsn, "0.1.0"}
+	, {vsn, "0.1.1"}
 	, {modules, []}
 	, {registered, []}
 	, {applications, [kernel,stdlib]}
@@ -9,5 +9,12 @@
   , {maintainers, ["Gregoire Lejeune", "Mathias Franck"]}
   , {licenses, ["BSD-3"]}
   , {links, [{"Github", "https://github.com/botsunit/bucs"}]}
+  , {files, ["src/*"
+             , "include/*"
+             , "Makefile"
+             , "README.md"
+             , "rebar.config"
+             , "rebar.lock"
+             , "mix.exs"]}
   , {build_tools, ["rebar3", "mix", "make"]}
 ]}.
