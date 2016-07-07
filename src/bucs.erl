@@ -178,15 +178,20 @@ to_float(Value) when is_atom(Value) ->
 % </pre>
 % @end
 to_term(Value) ->
-  Value0 = to_string(Value),
-  Value1 = case lists:reverse(Value0) of
-         [$.|_] -> Value0;
-         _ -> Value0 ++ "."
-       end,
-  {ok, Tokens, _} = erl_scan:string(Value1),
-  case erl_parse:parse_term(Tokens) of
-    {ok, Term} -> {ok, Term};
-    {error, {_, _, Reason}} -> {error, Reason}
+  try
+    Value0 = to_string(Value),
+    Value1 = case lists:reverse(Value0) of
+               [$.|_] -> Value0;
+               _ -> Value0 ++ "."
+             end,
+    {ok, Tokens, _} = erl_scan:string(Value1),
+    case erl_parse:parse_term(Tokens) of
+      {ok, Term} -> {ok, Term};
+      {error, {_, _, Reason}} -> {error, Reason}
+    end
+  catch
+    _:Error ->
+      {error, Error}
   end.
 
 % @deprecated
