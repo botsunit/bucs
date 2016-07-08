@@ -24,7 +24,9 @@ join(List, Sep) when is_list(List), is_binary(Sep) ->
                 (<<>>, <<>>) -> <<>>;
                 (A, <<>>) -> A;
                 (<<>>, B) -> B;
-                (A, B) -> <<A/binary, Sep/binary, B/binary>>
+                (A, B) -> <<(bucs:to_binary(A))/binary,
+                            Sep/binary,
+                            (bucs:to_binary(B))/binary>>
               end, <<>>, List);
 join(Bin, _) when is_binary(Bin) ->
   Bin.
