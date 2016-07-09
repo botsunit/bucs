@@ -69,7 +69,7 @@ t_convert() ->
   ?assertEqual("[1,2,3,4]", bucs:to_string([1,2,3,4])),
   ?assertEqual("{1,2,3,4}", bucs:to_string({1,2,3,4})),
   ?assertEqual("123", bucs:to_string(123)),
-  ?assertEqual("1.23400000000000005684e+02", bucs:to_string(123.4)),
+  ?assertEqual("123.4", bucs:to_string(123.4)),
   ?assertEqual({ok, 123}, bucs:to_term(123)),
   ?assertEqual({ok, 123}, bucs:to_term(<<"123">>)),
   ?assertEqual({ok, 123}, bucs:to_term("123")),
