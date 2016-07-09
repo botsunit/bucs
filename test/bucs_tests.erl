@@ -43,7 +43,7 @@ t_convert() ->
   ?assertEqual(<<"list">>, bucs:to_binary("list")),
   ?assertEqual(<<"list">>, bucs:to_binary(<<"list">>)),
   ?assertEqual(<<"123">>, bucs:to_binary(123)),
-  ?assertEqual(<<"1.20000000000000000000e+01">>, bucs:to_binary(12.0)),
+  ?assertEqual(<<"12.0">>, bucs:to_binary(12.0)),
   ?assertEqual(<<"true">>, bucs:to_binary(true)),
   ?assertEqual(<<"false">>, bucs:to_binary(false)),
   ?assertEqual(123, bucs:to_integer(123)),

@@ -106,6 +106,8 @@ to_string(V) ->
 % @end
 to_binary(V) when is_binary(V); is_bitstring(V) ->
   V;
+to_binary(V) when is_float(V) ->
+  iolist_to_binary(to_string(V));
 to_binary(V) ->
   iolist_to_binary(to_list(V)).
 
