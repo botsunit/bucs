@@ -64,6 +64,7 @@ t_convert() ->
   ?assertEqual(123.45, bucs:to_float('123.45')),
   ?assertEqual(123.0, bucs:to_float(123)),
   ?assertEqual("hello", bucs:to_string(hello)),
+  ?assertEqual("hello.world", bucs:to_string('hello.world')),
   ?assertEqual("hello", bucs:to_string("hello")),
   ?assertEqual("hello", bucs:to_string(<<"hello">>)),
   ?assertEqual("[1,2,3,4]", bucs:to_string([1,2,3,4])),

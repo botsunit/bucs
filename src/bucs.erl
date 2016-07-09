@@ -81,7 +81,8 @@ to_list(V) when is_tuple(V) ->
 % Convert the given term to string
 % @end
 to_string(V) when is_binary(V);
-                  is_bitstring(V) ->
+                  is_bitstring(V);
+                  is_atom(V) ->
   lists:flatten(to_list(V));
 to_string(V) ->
   case is_string(V) of
