@@ -3,7 +3,7 @@
 -export([type/1, exploded/1]).
 
 type(File) ->
-  case filename:extension(File) of
+  case filename:extension(bucs:to_binary(File)) of
     <<>> -> <<"application/octet-stream">>;
     Ext -> mime(Ext)
   end.
