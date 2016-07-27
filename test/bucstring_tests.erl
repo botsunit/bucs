@@ -26,5 +26,7 @@ t_gsub() ->
   ?assertEqual("My name is Bob... Sponge Bob!",
                bucstring:gsub("My name is Bill... Sponge Bill!",
                               "Bill",
-                              "Bob")).
+                              "Bob")),
+  ?assertEqual("Hello_World_toto",
+               bucstring:gsub("Hello.World.toto", ".", "_")).
 
