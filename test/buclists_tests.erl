@@ -27,7 +27,7 @@ t_keyfind() ->
   ?assertEqual(undefined, buclists:keyfind(missing_key, 1, [{key, value}], undefined)).
 
 t_delete_if() ->
-  ?assertEqual([1,2,3], buclists:delete_if(fun(E) ->
+  ?assertEqual([1, 2, 3], buclists:delete_if(fun(E) ->
                                                E > 3
-                                           end, [1,2,3,4,5])).
+                                           end, [1, 2, 3, 4, 5])).
 

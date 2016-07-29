@@ -1,5 +1,8 @@
 -module(bucs).
 
+-include_lib("eunit/include/eunit.hrl").
+-include("../include/bucs.hrl").
+
 -export([
          to_atom/1,
          to_list/1,
@@ -24,7 +27,10 @@
          compare_as_binary/2,
          pipecall/1,
          match/2,
-         call/3
+         call/3,
+         blank/1,
+         present/1,
+         default_to/2
         ]).
 
 % @doc
@@ -356,5 +362,39 @@ call(Module, Function, Args) ->
       erlang:apply(Module, Function, Args);
     false ->
       {error, undefined_function}
+  end.
+
+% @doc
+% @end
+blank([]) -> true;
+blank({}) -> true;
+blank(<<>>) -> true;
+blank(M) when is_map(M) -> maps:size(M) == 0;
+blank(nil) -> true;
+blank(undefined) -> true;
+blank(false) -> true;
+blank(X) ->
+  try
+    binary:replace(bucs:to_binary(X),
+                   [<<" ">>, <<"\r">>, <<"\n">>, <<"\t">>],
+                   <<>>,
+                   [global]) == <<>>
+  catch
+    _:_ -> false
+  end.
+
+% @doc
+% @end
+present(X) ->
+  not blank(X).
+
+% @doc
+% @end
+default_to(X, Default) ->
+  case blank(X) of
+    true ->
+      Default;
+    _ ->
+      X
   end.
 

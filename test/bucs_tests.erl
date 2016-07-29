@@ -19,7 +19,8 @@ bucs_test_() ->
     ?_test(t_function_doesnt_exists_cause_private()),
     ?_test(t_apply()),
     ?_test(t_is()),
-    ?_test(t_convert_record())
+    ?_test(t_convert_record()),
+    ?_test(t_blank())
    ]}.
 
 setup() ->
@@ -67,8 +68,8 @@ t_convert() ->
   ?assertEqual("hello.world", bucs:to_string('hello.world')),
   ?assertEqual("hello", bucs:to_string("hello")),
   ?assertEqual("hello", bucs:to_string(<<"hello">>)),
-  ?assertEqual("[1,2,3,4]", bucs:to_string([1,2,3,4])),
-  ?assertEqual("{1,2,3,4}", bucs:to_string({1,2,3,4})),
+  ?assertEqual("[1,2,3,4]", bucs:to_string([1, 2, 3, 4])),
+  ?assertEqual("{1,2,3,4}", bucs:to_string({1, 2, 3, 4})),
   ?assertEqual("123", bucs:to_string(123)),
   ?assertEqual("123.4", bucs:to_string(123.4)),
   ?assertEqual({ok, 123}, bucs:to_term(123)),
@@ -79,12 +80,12 @@ t_convert() ->
   ?assertEqual({ok, atom}, bucs:to_term(<<"atom">>)),
   ?assertEqual({ok, "string"}, bucs:to_term("\"string\"")),
   ?assertEqual({ok, "string"}, bucs:to_term(<<"\"string\"">>)),
-  ?assertEqual({ok, [1,2,3,4]}, bucs:to_term("[1,2,3,4]")),
-  ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]}},
-               bucs:to_term("{hello, 123.45, 678, \"hello\", <<\"world\">>, [1,2,3,4]}")),
+  ?assertEqual({ok, [1, 2, 3, 4]}, bucs:to_term("[1, 2, 3, 4]")),
+  ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1, 2, 3, 4]}},
+               bucs:to_term("{hello, 123.45, 678, \"hello\", <<\"world\">>, [1, 2, 3, 4]}")),
   ?assertEqual({ok, {1, {2, {3, {4}}}}}, bucs:to_term("{1, {2, {3, {4}}}}")),
-  ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]}},
-               bucs:to_term({hello, 123.45, 678, "hello", <<"world">>, [1,2,3,4]})),
+  ?assertEqual({ok, {hello, 123.45, 678, "hello", <<"world">>, [1, 2, 3, 4]}},
+               bucs:to_term({hello, 123.45, 678, "hello", <<"world">>, [1, 2, 3, 4]})),
   ?assertEqual({ok, {1, {2, {3, {4}}}}}, bucs:to_term({1, {2, {3, {4}}}})),
   ?assertEqual(bucs:to_binary(
                  bucs:to_list(
@@ -112,16 +113,16 @@ t_module_doesnt_exists() ->
   ?assertNot(bucs:module_exists(this_module_surely_doesnt_exists)).
 
 t_function_exists() ->
-  ?assert(bucs:function_exists(bucs,function_exists,3)).
+  ?assert(bucs:function_exists(bucs, function_exists, 3)).
 
 t_function_doesnt_exists_in_module() ->
-  ?assertNot(bucs:function_exists(bucs,this_function_surely_doesnt_exists,12)).
+  ?assertNot(bucs:function_exists(bucs, this_function_surely_doesnt_exists, 12)).
 
 t_function_doesnt_exists_cause_bad_module() ->
-  ?assertNot(bucs:function_exists(this_module_surely_doesnt_exists,function_exists,3)).
+  ?assertNot(bucs:function_exists(this_module_surely_doesnt_exists, function_exists, 3)).
 
 t_function_doesnt_exists_cause_private() ->
-  ?assertNot(bucs:function_exists(bucs,compare_as,3)).
+  ?assertNot(bucs:function_exists(bucs, compare_as, 3)).
 
 t_apply() ->
   ?assertEqual({ok, 5}, bucs:apply(fun addition/2, [3, 2])),
@@ -148,4 +149,22 @@ t_convert_record() ->
   ?assertMatch(#{bar := "baz", camp := "spam"}, ?record_to_map(rec, #rec{})),
   ?assertMatch(#rec{bar = "baz", camp = "spam"}, ?list_to_record(rec, [{bar, "baz"}, {camp, "spam"}])),
   ?assertMatch(#rec{bar = "baz", camp = "spam"}, ?map_to_record(rec, #{bar => "baz", camp => "spam"})).
+
+-record(test, {foo, bar, baz}).
+
+t_blank() ->
+  ?assert(bucs:blank([])),
+  ?assert(bucs:blank({})),
+  ?assert(bucs:blank("")),
+  ?assert(bucs:blank(#{})),
+  ?assert(bucs:blank(<<"">>)),
+  ?assert(bucs:blank("  ")),
+  ?assert(bucs:blank(<<"    ">>)),
+  ?assert(bucs:blank(nil)),
+  ?assert(bucs:blank(undefined)),
+  ?assert(bucs:blank(false)),
+  ?assertNot(bucs:blank(0)),
+  ?assertNot(bucs:blank(#{toto => titi})),
+  ?assertNot(bucs:blank({hello})),
+  ?assertNot(bucs:blank(#test{})).
 

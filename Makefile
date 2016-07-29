@@ -1,45 +1,42 @@
+include bu.mk
+
 .PHONY: doc
-FIND_REBAR = \
-                REBAR_BIN=; \
-                for x in ./rebar3 rebar3; do \
-                if type "$${x%% *}" >/dev/null 2>/dev/null; then REBAR_BIN=$$x; break; fi; \
-                done; \
-                if [ -z "$$REBAR_BIN" ]; then echo 1>&2 "Unable to find rebar3"; exit 2; fi
-REBAR = $(FIND_REBAR); $$REBAR_BIN
-MIX = mix
 
 compile-erl:
-	@$(REBAR) compile
+	$(verbose) $(REBAR) compile
 
 compile-ex: elixir
-	@$(MIX) deps.get
-	@$(MIX) compile
+	$(verbose) $(MIX) deps.get
+	$(verbose) $(MIX) compile
 
 elixir:
-	@$(REBAR) elixir generate_mix
-	@$(REBAR) elixir generate_lib
+	$(verbose) $(REBAR) elixir generate_mix
+	$(verbose) $(REBAR) elixir generate_lib
 
 tests:
-	@$(REBAR) eunit
+	$(verbose) $(REBAR) eunit
+
+lint:
+	$(verbose) $(REBAR) lint
 
 doc:
-	@$(REBAR) as doc edoc
+	$(verbose) $(REBAR) as doc edoc
 
-dist: dist-ex dist-erl doc
+dist: dist-ex dist-erl doc lint
 
 release: dist-ex dist-erl
-	@$(REBAR) hex publish
+	$(verbose) $(REBAR) hex publish
 
 dist-erl: distclean-erl compile-erl tests
 
 distclean-erl: distclean
-	@rm -f rebar.lock
+	$(verbose) $(RM_F) rebar.lock
 
 dist-ex: distclean-ex compile-ex
 
 distclean-ex: distclean
-	@rm -f mix.lock
+	$(verbose) $(RM_F) mix.lock
 
 distclean:
-	@rm -rf _build test/eunit deps ebin
+	$(verbose) $(RM_RF) _build test/eunit deps ebin
 

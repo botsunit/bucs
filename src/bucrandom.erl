@@ -60,7 +60,7 @@ randstr(Length) ->
 
 % @hidden
 init(Args) ->
-  _ = ?RAND:seed(?SEED_STATE),
+  _ = erlang:apply(?RAND, seed, [?SEED_STATE]),
   {ok, Args}.
 
 % @hidden
@@ -90,7 +90,7 @@ code_change(_OldVsn, State, _Extra) ->
 -define(CHARS, "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890").
 
 private_randstr(Size) ->
-  lists:flatten([lists:sublist(?CHARS, ?RAND:uniform(length(?CHARS)), 1) || _ <- lists:seq(1, Size)]).
+  lists:flatten([lists:sublist(?CHARS, erlang:apply(?RAND, uniform, [length(?CHARS)]), 1) || _ <- lists:seq(1, Size)]).
 
 ensure_started() ->
   case [A || {A, _, _} <- application:which_applications(), A =:= bucs] of

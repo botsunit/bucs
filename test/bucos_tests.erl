@@ -29,7 +29,7 @@ t_run_returns() ->
   ?assertMatch({ok, "Hello\n"}, bucos:run("echo Hello")).
 
 t_run_returns_with_full_options() ->
-  ?assertMatch({ok, "Hello\n"}, bucos:run("echo Hello",[{timeout,200},stdout_on_error])).
+  ?assertMatch({ok, "Hello\n"}, bucos:run("echo Hello", [{timeout, 200}, stdout_on_error])).
 
 t_run_error_with_simple_status() ->
   ?assertMatch({error, _ }, bucos:run("invalidCommand 2>&1")).
@@ -41,22 +41,22 @@ t_run_timeout_dont_expire() ->
   ?assertMatch({ok, _}, bucos:run("sleep 1", 1100)).
 
 t_run_timeout_as_option_expires() ->
-  ?assertMatch({error, timeout}, bucos:run("sleep 1", [{timeout,500}])).
+  ?assertMatch({error, timeout}, bucos:run("sleep 1", [{timeout, 500}])).
 
 t_run_timeout_with_full_options_expires() ->
-  ?assertMatch({error, timeout}, bucos:run("sleep 1", [stdout_on_error,{timeout,500}])).
+  ?assertMatch({error, timeout}, bucos:run("sleep 1", [stdout_on_error, {timeout, 500}])).
 
 t_run_error_with_text_output() ->
-  {error,ErrCode,Data} = bucos:run("invalidCommand 2>&1",[stdout_on_error]),
+  {error, ErrCode, Data} = bucos:run("invalidCommand 2>&1", [stdout_on_error]),
   ?assert(ErrCode /= 0 andalso string:len(Data)>14). % >14: I assume that the faulty command is somewhere inside the error output
 
 t_run_error_with_full_options() ->
-  {error, ErrCode, Data} = bucos:run(["sleep 1", "invalidCommand 2>&1"],[stdout_on_error,{timeout, 1100}]),
+  {error, ErrCode, Data} = bucos:run(["sleep 1", "invalidCommand 2>&1"], [stdout_on_error, {timeout, 1100}]),
   ?assert(ErrCode /= 0 andalso string:len(Data)>14), % >14: I assume that the faulty command is somewhere inside the error output
-  ?assertMatch({error, timeout}, bucos:run(["sleep 1", "invalidCommand 2>&1"],[stdout_on_error,{timeout, 990}])).
+  ?assertMatch({error, timeout}, bucos:run(["sleep 1", "invalidCommand 2>&1"], [stdout_on_error, {timeout, 990}])).
 
 t_run_exception_bad_options() ->
-  ?assertError(badarg, bucos:run("echo Hello", {crocodile,piranha} )).
+  ?assertError(badarg, bucos:run("echo Hello", {crocodile, piranha} )).
 
 t_run_returns_output() ->
   ?assertMatch({ok, "hello\nbeautiful\nworld\n"},

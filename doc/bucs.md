@@ -9,14 +9,14 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-2">apply/2</a></td><td></td></tr><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#apply-4">apply/4</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
-Returns the result of applying Function in Module to Args.</td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-2">apply/2</a></td><td></td></tr><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#apply-4">apply/4</a></td><td></td></tr><tr><td valign="top"><a href="#blank-1">blank/1</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
+Returns the result of applying Function in Module to Args.</td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#default_to-2">default_to/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
 Check if the given function exist.</td></tr><tr><td valign="top"><a href="#is_kw_list-1">is_kw_list/1</a></td><td>
 Wheck is the given value is a keyword list.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
 Check if the given value is a string.</td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td>
 Return true if <tt>A</tt> match <tt>B</tt>.</td></tr><tr><td valign="top"><a href="#module_exist-1">module_exist/1</a></td><td></td></tr><tr><td valign="top"><a href="#module_exists-1">module_exists/1</a></td><td>
 Check if the given module exist.</td></tr><tr><td valign="top"><a href="#pipecall-1">pipecall/1</a></td><td> 
-Pipe fun call.</td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td> 
+Pipe fun call.</td></tr><tr><td valign="top"><a href="#present-1">present/1</a></td><td></td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td> 
 Convert the given term to atom.</td></tr><tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td> 
 Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td> 
 Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td> 
@@ -47,6 +47,12 @@ Convert the given value to term.</td></tr></table>
 ### apply/4 ###
 
 `apply(Module, Function, Args, Default) -> any()`
+
+<a name="blank-1"></a>
+
+### blank/1 ###
+
+`blank(M) -> any()`
 
 <a name="call-3"></a>
 
@@ -92,6 +98,12 @@ Return `{error, undefined_function}` if the applied function is not exported.
 ### compare_as_string/2 ###
 
 `compare_as_string(V1, V2) -> any()`
+
+<a name="default_to-2"></a>
+
+### default_to/2 ###
+
+`default_to(X, Default) -> any()`
 
 <a name="function_exist-3"></a>
 
@@ -171,6 +183,12 @@ Example:
                       {fun addition/2, [7]}
                      ]).
 ```
+
+<a name="present-1"></a>
+
+### present/1 ###
+
+`present(X) -> any()`
 
 <a name="to_atom-1"></a>
 

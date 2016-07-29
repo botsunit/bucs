@@ -106,7 +106,7 @@ is_ip(IP) ->
 % privates
 
 get_active_ips(If_list) ->
-  get_ips([A || A <- If_list, inet:ifget(A,[addr]) /= {ok,[{addr,{127,0,0,1}}]}, filter_networkcard(list_to_binary(A))]).
+  get_ips([A || A <- If_list, inet:ifget(A, [addr]) /= {ok, [{addr, {127, 0, 0, 1}}]}, filter_networkcard(list_to_binary(A))]).
 
 get_iflist() ->
   {ok, IfList} = inet:getiflist(),
@@ -135,5 +135,5 @@ get_ips([If|Rest], R) ->
   end.
 
 get_loopback(If_list) ->
-  get_ips([A || A <- If_list, inet:ifget(A,[addr]) == {ok,[{addr,{127,0,0,1}}]}]).
+  get_ips([A || A <- If_list, inet:ifget(A, [addr]) == {ok, [{addr, {127, 0, 0, 1}}]}]).
 

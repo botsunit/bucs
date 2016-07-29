@@ -189,16 +189,7 @@ do_copy(Source, Destination, Options) ->
 build_dir(Source, Destination, Options) ->
   case make_dir(Destination) of
     ok ->
-      lists:foreach(fun(Option) ->
-                        case lists:member(Option, Options) of
-                          true -> change_file_mode(Source, Destination, Option);
-                          false ->
-                            case lists:keyfind(Option, 1, Options) of
-                              false -> ok;
-                              Tuple -> change_file_mode(Source, Destination, Tuple)
-                            end
-                        end
-                    end, [default_file_info, preserve_file_info, directory_mode, executable_file_mode]);
+      change_file_modes(Source, Destination, Options, [default_file_info, preserve_file_info, directory_mode, executable_file_mode]);
     {error, Reason} ->
       error(Reason)
   end.
@@ -223,22 +214,25 @@ copyfile(Source, Destination, Options) ->
     true ->
       case file:copy(Source, Destination) of
         {ok, _} ->
-          lists:foreach(fun(Option) ->
-                            case lists:member(Option, Options) of
-                              true -> change_file_mode(Source, Destination, Option);
-                              false ->
-                                case lists:keyfind(Option, 1, Options) of
-                                  false -> ok;
-                                  Tuple -> change_file_mode(Source, Destination, Tuple)
-                                end
-                            end
-                        end, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
+          change_file_modes(Source, Destination, Options, [default_file_info, preserve_file_info, regular_file_mode, executable_file_mode]);
         {error, Reason} ->
           error(io_lib:format("~p -> ~p : ~p", [Source, Destination, Reason]))
       end;
     false ->
       ok
   end.
+
+change_file_modes(Source, Destination, Options, Modes) ->
+  lists:foreach(fun(Option) ->
+                    case lists:member(Option, Options) of
+                      true -> change_file_mode(Source, Destination, Option);
+                      false ->
+                        case lists:keyfind(Option, 1, Options) of
+                          false -> ok;
+                          Tuple -> change_file_mode(Source, Destination, Tuple)
+                        end
+                    end
+                end, Modes).
 
 change_file_mode(_, _, default_file_info) ->
   ok;

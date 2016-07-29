@@ -26,7 +26,7 @@ build_randstrs(N) ->
 all_are_different([]) ->
   true;
 all_are_different([H|T]) ->
-  not lists:member(H,T) andalso all_are_different(T).
+  not lists:member(H, T) andalso all_are_different(T).
 
 t_randstr_has_good_content() ->
   LegalChars = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890",

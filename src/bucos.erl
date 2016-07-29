@@ -9,7 +9,7 @@
 -define(TIMEOUT, 5000).
 -define(DEFAULT_RETURN_TYPE, combined).
 
--type options() :: {timeout,integer()} | stdout_on_error | {return, combined|list, all|last|integer()|[integer()]}.
+-type options() :: {timeout, integer()} | stdout_on_error | {return, combined|list, all|last|integer()|[integer()]}.
 
 % @equiv run(Cmd, 5000)
 -spec run(string() | binary()) -> term().
@@ -22,7 +22,7 @@ run(Cmd) ->
 % <ul>
 % <li><tt>stdout_on_error</tt> : To get standard output in the result, in case of error.</li>
 % <li><tt>display_stdout</tt> : Display stdout.</li>
-% <li><tt>{timeout, integer()}</tt> : To set a maximum time to wait for, before returning with a <tt>{error,timeout}</tt> result.</li>
+% <li><tt>{timeout, integer()}</tt> : To set a maximum time to wait for, before returning with a <tt>{error, timeout}</tt> result.</li>
 % <li><tt>{return, list|combined, all|last|integer()|[integer()]}</tt> : To specify output collection.</li>
 % <li><tt>{cd, string() | binary()}</tt> : Change directory before run command.</li>
 % <li><tt>{env, [{string(), string() | false}]}</tt> :  The environment of the started process is extended using the environment specifications.</li>
@@ -43,7 +43,7 @@ run(Cmd, Options) when is_list(Options) ->
     _ ->
       run_all(Cmd, Options, [])
   end;
-run(_,_) ->
+run(_, _) ->
   error(badarg).
 
 run_options([], Acc) ->
@@ -62,7 +62,7 @@ loop(Port, Data, Timeout, StdoutOnError, DisplayStdout) ->
         DisplayStdout -> io:format("~s", [NewData]);
         true -> ok
       end,
-      loop(Port, Data++NewData, Timeout, StdoutOnError, DisplayStdout);
+      loop(Port, Data ++ NewData, Timeout, StdoutOnError, DisplayStdout);
     {Port, {exit_status, 0}} -> {ok, Data};
     {Port, {exit_status, S}} ->
       if

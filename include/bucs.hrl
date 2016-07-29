@@ -20,3 +20,13 @@
 -define(map_to_record(Record, Map),
         ?list_to_record(Record, maps:to_list(Map))).
 
+-define(caller(),
+        begin
+          case erlang:process_info(self(), current_stacktrace) of
+            {current_stacktrace,
+             [{?MODULE,_,_,_},{Module,_,_,_}|_]} -> {ok, Module};
+            _ ->
+              undefined
+          end
+        end).
+
