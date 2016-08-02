@@ -3,6 +3,7 @@
 
 -include("../include/bucs.hrl").
 -include_lib("eunit/include/eunit.hrl").
+-include_lib("../include/bucassert.hrl").
 
 -record(rec, {bar = "baz", camp = "spam"}).
 
@@ -10,17 +11,18 @@ bucs_test_() ->
   {setup,
    fun setup/0, fun teardown/1,
    [
-    ?_test(t_convert()),
-    ?_test(t_module_exists()),
-    ?_test(t_module_doesnt_exists()),
-    ?_test(t_function_exists()),
-    ?_test(t_function_doesnt_exists_in_module()),
-    ?_test(t_function_doesnt_exists_cause_bad_module()),
-    ?_test(t_function_doesnt_exists_cause_private()),
-    ?_test(t_apply()),
-    ?_test(t_is()),
-    ?_test(t_convert_record()),
-    ?_test(t_blank())
+    ?_test(t_convert())
+    , ?_test(t_module_exists())
+    , ?_test(t_module_doesnt_exists())
+    , ?_test(t_function_exists())
+    , ?_test(t_function_doesnt_exists_in_module())
+    , ?_test(t_function_doesnt_exists_cause_bad_module())
+    , ?_test(t_function_doesnt_exists_cause_private())
+    , ?_test(t_apply())
+    , ?_test(t_is())
+    , ?_test(t_convert_record())
+    , ?_test(t_blank())
+    , ?_test(t_eval())
    ]}.
 
 setup() ->
@@ -168,3 +170,8 @@ t_blank() ->
   ?assertNot(bucs:blank({hello})),
   ?assertNot(bucs:blank(#test{})).
 
+t_eval() ->
+  ?assertContinueIfMatch({value, Fun, _}, bucs:eval("fun(X) -> X * X end"), Fun,
+                         fun(F) ->
+                             ?assertEqual(25, F(5))
+                         end).
