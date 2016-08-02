@@ -30,7 +30,9 @@
          call/3,
          blank/1,
          present/1,
-         default_to/2
+         default_to/2,
+         eval/1,
+         eval/2
         ]).
 
 % @doc
@@ -396,5 +398,26 @@ default_to(X, Default) ->
       Default;
     _ ->
       X
+  end.
+
+eval(Value) ->
+  eval(Value, []).
+
+eval(Value, Environ) ->
+  Value0 = to_string(Value),
+  Value1 = case lists:reverse(Value0) of
+             [$.|_] -> Value0;
+             _ -> Value0 ++ "."
+           end,
+  case erl_scan:string(Value1) of
+    {ok, Scanned, _} ->
+      case erl_parse:parse_exprs(Scanned) of
+        {ok, Parsed} ->
+          erl_eval:exprs(Parsed, Environ);
+        Error ->
+          Error
+      end;
+    Error ->
+      Error
   end.
 
