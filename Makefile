@@ -2,6 +2,6 @@ HAS_ELIXIR=1
 
 include bu.mk
 
-release: $(DIST)
+release: dist
 	$(verbose) $(REBAR) hex publish
 
