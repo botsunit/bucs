@@ -12,6 +12,7 @@
   , {files, ["src/*"
              , "include/*"
              , "Makefile"
+             , "bu.mk"
              , "README.md"
              , "rebar.config"
              , "rebar.lock"
