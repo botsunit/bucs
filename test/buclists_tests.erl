@@ -9,6 +9,8 @@ buclists_test_() ->
     ?_test(t_pipemap())
     , ?_test(t_keyfind())
     , ?_test(t_delete_if())
+    , ?_test(t_splitn())
+    , ?_test(t_nsplit())
    ]}.
 
 setup() ->
@@ -30,4 +32,12 @@ t_delete_if() ->
   ?assertEqual([1, 2, 3], buclists:delete_if(fun(E) ->
                                                E > 3
                                            end, [1, 2, 3, 4, 5])).
+
+t_splitn() ->
+  ?assertEqual([[a,b,c],[d,e,f],[g]],
+               buclists:splitn([a,b,c,d,e,f,g], 3)).
+
+t_nsplit() ->
+  ?assertEqual([[a,b],[c,d],[e,f,g]],
+               buclists:nsplit([a,b,c,d,e,f,g], 3)).
 

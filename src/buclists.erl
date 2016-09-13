@@ -8,7 +8,9 @@
          keyufind/3,
          keyufind/4,
          delete_if/2,
-         merge_keylists/3
+         merge_keylists/3,
+         splitn/2,
+         nsplit/2
         ]).
 
 % @doc
@@ -97,4 +99,51 @@ merge_keylists(N, [Tuple|Rest], TupleList2) when
 merge_keylists(N, [Tuple|Rest], TupleList2) when
     is_integer(N), is_list(TupleList2), is_list(Rest)->
   merge_keylists(N, Rest, TupleList2 ++ [Tuple]).
+
+% @doc
+% Split the given list in multiples lists of maximum N elements.
+%
+% Example:
+% <pre>
+% buclists:splitn([a,b,c,d,e,f,g], 3).
+%   #=> [[a,b,c],[d,e,f],[g]]
+% </pre>
+% @end
+splitn(List, N) ->
+  splitn(List, N, []).
+
+% @hidden
+splitn([], _, Acc) ->
+  lists:reverse(Acc);
+splitn(List, N, Acc) ->
+  {R, Rest} = try
+                lists:split(N, List)
+              catch
+                _:_ -> {List, []}
+              end,
+  splitn(Rest, N, [R|Acc]).
+
+% @doc
+% Split the given list in N lists
+%
+% Example:
+% <pre>
+% buclists:nsplit([a,b,c,d,e,f,g], 3).
+%   #=> [[a,b],[c,d],[e,f,g]]
+% </pre>
+% @end
+nsplit(List, N) ->
+  nsplit(List, erlang:length(List), N, []).
+
+% @hidden
+nsplit([], _, _, Acc) ->
+  lists:reverse(Acc);
+nsplit(List, Size, N, Acc) ->
+  NE = Size div N,
+  case lists:split(NE, List) of
+    {[], Rest} ->
+      nsplit(Rest, Size, N - 1, Acc);
+    {R, Rest} ->
+      nsplit(Rest, Size - erlang:length(R), N - 1, [R|Acc])
+  end.
 
