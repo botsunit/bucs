@@ -34,10 +34,10 @@ t_delete_if() ->
                                            end, [1, 2, 3, 4, 5])).
 
 t_splitn() ->
-  ?assertEqual([[a,b,c],[d,e,f],[g]],
-               buclists:splitn([a,b,c,d,e,f,g], 3)).
+  ?assertEqual([[a, b, c], [d, e, f], [g]],
+               buclists:splitn([a, b, c, d, e, f, g], 3)).
 
 t_nsplit() ->
-  ?assertEqual([[a,b],[c,d],[e,f,g]],
-               buclists:nsplit([a,b,c,d,e,f,g], 3)).
+  ?assertEqual([[a, b], [c, d], [e, f, g]],
+               buclists:nsplit([a, b, c, d, e, f, g], 3)).
 
