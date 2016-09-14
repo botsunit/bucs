@@ -123,7 +123,7 @@ country([Provider|Rest], IP, _) ->
 -define(CAPTURE(Body, Name),
         case re:run(Body, "\""++Name++"\":\"([^\"]*)\"", [{capture, [1], list}]) of
           {match, [[]]} -> undefined;
-          {match, [C]} -> C;
+          {match, [C]} -> bucs:to_binary(C);
           _ -> undefined
         end).
 
