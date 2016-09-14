@@ -105,6 +105,7 @@ is_ip(IP) ->
   error =/= to_ip(IP).
 
 % @doc
+% Return the country informations for a given IP address.
 % @end
 -spec country(inet:ip4_address() | string() | binary()) ->
   {ok, CountryName :: binary(), CountryCode :: binary(), TimeZone :: binary()}
@@ -121,7 +122,7 @@ country([Provider|Rest], IP, _) ->
   country(Rest, IP, country(Provider, IP)).
 
 -define(CAPTURE(Body, Name),
-        case re:run(Body, "\""++Name++"\":\"([^\"]*)\"", [{capture, [1], list}]) of
+        case re:run(Body, "\"" ++ Name ++ "\":\"([^\"]*)\"", [{capture, [1], list}]) of
           {match, [[]]} -> undefined;
           {match, [C]} -> bucs:to_binary(C);
           _ -> undefined

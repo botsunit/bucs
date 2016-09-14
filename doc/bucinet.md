@@ -11,7 +11,8 @@
 
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#active_ip-0">active_ip/0</a></td><td>
 Return the first active IP (or loopback if none).</td></tr><tr><td valign="top"><a href="#active_ips-0">active_ips/0</a></td><td>
-Return all actives IPs.</td></tr><tr><td valign="top"><a href="#ip_to_binary-1">ip_to_binary/1</a></td><td>
+Return all actives IPs.</td></tr><tr><td valign="top"><a href="#country-1">country/1</a></td><td>
+Return the country informations for a given IP address.</td></tr><tr><td valign="top"><a href="#ip_to_binary-1">ip_to_binary/1</a></td><td>
 Return a binary for a given <tt>inet:ip4_address()</tt></td></tr><tr><td valign="top"><a href="#ip_to_string-1">ip_to_string/1</a></td><td>
 Return a string for the given <tt>inet:ip4_address()</tt></td></tr><tr><td valign="top"><a href="#is_ip-1">is_ip/1</a></td><td>
 Return true if the given parameter is an IP.</td></tr><tr><td valign="top"><a href="#loopback-0">loopback/0</a></td><td>
@@ -44,6 +45,17 @@ active_ips() -&gt; [<a href="inet.md#type-ip4_address">inet:ip4_address()</a>]
 <br />
 
 Return all actives IPs.
+
+<a name="country-1"></a>
+
+### country/1 ###
+
+<pre><code>
+country(IP::<a href="inet.md#type-ip4_address">inet:ip4_address()</a> | string() | binary()) -&gt; {ok, CountryName::binary(), CountryCode::binary(), TimeZone::binary()} | {error, term()}
+</code></pre>
+<br />
+
+Return the country informations for a given IP address.
 
 <a name="ip_to_binary-1"></a>
 
