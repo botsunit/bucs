@@ -108,7 +108,7 @@ is_ip(IP) ->
 % Return the country informations for a given IP address.
 % @end
 -spec country(inet:ip4_address() | string() | binary()) ->
-  {ok, CountryName :: binary(), CountryCode :: binary(), TimeZone :: binary()}
+  {ok, CountryCode :: binary(), CountryName :: binary(), TimeZone :: binary()}
   | {error, term()}.
 country(IP) ->
   _ = inets:start(),

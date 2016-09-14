@@ -51,7 +51,7 @@ Return all actives IPs.
 ### country/1 ###
 
 <pre><code>
-country(IP::<a href="inet.md#type-ip4_address">inet:ip4_address()</a> | string() | binary()) -&gt; {ok, CountryName::binary(), CountryCode::binary(), TimeZone::binary()} | {error, term()}
+country(IP::<a href="inet.md#type-ip4_address">inet:ip4_address()</a> | string() | binary()) -&gt; {ok, CountryCode::binary(), CountryName::binary(), TimeZone::binary()} | {error, term()}
 </code></pre>
 <br />
 
