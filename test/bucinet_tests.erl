@@ -12,7 +12,7 @@ bucinet_test_() ->
     , ?_test(t_active_ip())
     , ?_test(t_loopback())
     , ?_test(t_active_ips())
-
+    , ?_test(t_country())
    ]}.
 
 setup() ->
@@ -62,4 +62,10 @@ t_loopback() ->
 
 t_active_ips() ->
   ?assert(lists:all(fun bucinet:is_ip/1, bucinet:active_ips())).
+
+t_country() ->
+  ?assertEqual({ok, "US", "United States", "America/Los_Angeles"},
+               bucinet:country("208.80.152.201")),
+  ?assertEqual({error, unknow_ip},
+               bucinet:country("127.0.0.1")).
 

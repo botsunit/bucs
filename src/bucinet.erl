@@ -7,7 +7,8 @@
          active_ip/0,
          active_ips/0,
          loopback/0,
-         is_ip/1
+         is_ip/1,
+         country/1
         ]).
 
 % @doc
@@ -102,6 +103,56 @@ is_ip({A, B, C, D}) when A >= 0, A =< 255,
   true;
 is_ip(IP) ->
   error =/= to_ip(IP).
+
+% @doc
+% @end
+-spec country(inet:ip4_address() | string() | binary()) ->
+  {ok, CountryName :: binary(), CountryCode :: binary(), TimeZone :: binary()}
+  | {error, term()}.
+country(IP) ->
+  _ = inets:start(),
+  country([freegeoip, ipapi], IP, {error, no_provider}).
+
+country([], _, Result) ->
+  Result;
+country(_, _, Result) when element(1, Result) == ok ->
+  Result;
+country([Provider|Rest], IP, _) ->
+  country(Rest, IP, country(Provider, IP)).
+
+-define(CAPTURE(Body, Name),
+        case re:run(Body, "\""++Name++"\":\"([^\"]*)\"", [{capture, [1], list}]) of
+          {match, [[]]} -> undefined;
+          {match, [C]} -> C;
+          _ -> undefined
+        end).
+
+country(freegeoip, IP) ->
+  country("http://freegeoip.net/json/" ++ ip_to_string(IP),
+          "country_code",
+          "country_name",
+          "time_zone");
+country(ipapi, IP) ->
+  country("http://ip-api.com/json/" ++ ip_to_string(IP),
+          "countryCode",
+          "country",
+          "timezone").
+
+country(URL, CountryCode, CountryName, Timezone) ->
+  case httpc:request(URL) of
+    {ok, {{_, 200, _}, _, Body}} ->
+      case {ok,
+            ?CAPTURE(Body, CountryCode),
+            ?CAPTURE(Body, CountryName),
+            ?CAPTURE(Body, Timezone)} of
+        {ok, undefined, undefined, undefined} ->
+          {error, unknow_ip};
+        Other ->
+          Other
+      end;
+    {error, _} ->
+      {error, ip_server_error}
+  end.
 
 % privates
 
