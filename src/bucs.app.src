@@ -1,6 +1,6 @@
 {application, bucs, [
 	  {description, "Bots Unit Commons"}
-	, {vsn, "0.1.9"}
+	, {vsn, "0.1.10"}
 	, {modules, []}
 	, {registered, []}
 	, {applications, [kernel,stdlib]}
