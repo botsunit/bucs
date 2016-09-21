@@ -112,7 +112,6 @@ is_ip(IP) ->
   {ok, CountryCode :: binary(), CountryName :: binary(), TimeZone :: binary()}
   | {error, term()}.
 country(IP) ->
-  _ = inets:start(),
   country([freegeoip, ipapi, geoip, ipinfo], IP, {error, no_provider}).
 
 country([], _, Result) ->

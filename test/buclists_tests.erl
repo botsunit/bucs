@@ -26,6 +26,8 @@ t_pipemap() ->
 
 t_keyfind() ->
   ?assertEqual(value, buclists:keyfind(key, 1, [{key, value}], undefined)),
+  ?assertEqual({key, value, more}, buclists:keyfind(key, 1, [{key, value, more}], undefined)),
+  ?assertEqual(value, buclists:keyfind(key, 1, [{key, value, more}], 2, undefined)),
   ?assertEqual(undefined, buclists:keyfind(missing_key, 1, [{key, value}], undefined)).
 
 t_delete_if() ->

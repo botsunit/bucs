@@ -3,7 +3,7 @@
 	, {vsn, "0.1.10"}
 	, {modules, []}
 	, {registered, []}
-	, {applications, [kernel,stdlib]}
+	, {applications, [kernel,stdlib,inets]}
   , {mod, {bucs_app, []}}
 
   , {maintainers, ["Gregoire Lejeune", "Mathias Franck"]}

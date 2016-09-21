@@ -47,6 +47,8 @@ keyfind(Key, N, TupleList, Default) ->
     Tuple -> Tuple
   end.
 
+% @doc
+% @end
 keyfind(Key, N, TupleList, M, Default) ->
   case lists:keyfind(Key, N, TupleList) of
     false -> Default;
