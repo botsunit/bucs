@@ -83,14 +83,20 @@ to_list(V) when is_float(V) ->
 to_list(V) when is_binary(V); is_bitstring(V) ->
   binary_to_list(V);
 to_list(V) when is_tuple(V) ->
-  [element(I, V) || I <- lists:seq(1, tuple_size(V))].
+  [element(I, V) || I <- lists:seq(1, tuple_size(V))];
+to_list(V) when is_pid(V) ->
+  pid_to_list(V);
+to_list(V) when is_reference(V) ->
+  erlang:ref_to_list(V).
 
 % @doc
 % Convert the given term to string
 % @end
 to_string(V) when is_binary(V);
                   is_bitstring(V);
-                  is_atom(V) ->
+                  is_atom(V);
+                  is_pid(V);
+                  is_reference(V)->
   lists:flatten(to_list(V));
 to_string(V) ->
   case is_string(V) of
