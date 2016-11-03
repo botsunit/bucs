@@ -19,7 +19,8 @@ Check if the given module exist.</td></tr><tr><td valign="top"><a href="#pipecal
 Pipe fun call.</td></tr><tr><td valign="top"><a href="#present-1">present/1</a></td><td></td></tr><tr><td valign="top"><a href="#to_atom-1">to_atom/1</a></td><td> 
 Convert the given term to atom.</td></tr><tr><td valign="top"><a href="#to_binary-1">to_binary/1</a></td><td> 
 Convert the given term to binary.</td></tr><tr><td valign="top"><a href="#to_float-1">to_float/1</a></td><td> 
-Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td> 
+Convert the given term to float.</td></tr><tr><td valign="top"><a href="#to_float-2">to_float/2</a></td><td> 
+Convert the given term to float, with the given precision.</td></tr><tr><td valign="top"><a href="#to_integer-1">to_integer/1</a></td><td> 
 Convert the given term to integer.</td></tr><tr><td valign="top"><a href="#to_list-1">to_list/1</a></td><td> 
 Convert the given term to list.</td></tr><tr><td valign="top"><a href="#to_string-1">to_string/1</a></td><td>
 Convert the given term to string.</td></tr><tr><td valign="top"><a href="#to_term-1">to_term/1</a></td><td> 
@@ -253,6 +254,26 @@ Example
  123.45 = bucs:to_float(<<"123.45">>).
  123.45 = bucs:to_float('123.45').
  123.0 = bucs:to_float(123).
+```
+
+<a name="to_float-2"></a>
+
+### to_float/2 ###
+
+`to_float(Value, Precision) -> any()`
+
+
+Convert the given term to float, with the given precision
+
+Example
+
+```
+
+ 123.457 = bucs:to_float(123.45678i, 3).
+ 123.457 = bucs:to_float("123.45678", 3).
+ 123.457 = bucs:to_float(<<"123.45678">>, 3).
+ 123.457 = bucs:to_float('123.45678', 3).
+ 123.0 = bucs:to_float(123, 3).
 ```
 
 <a name="to_integer-1"></a>

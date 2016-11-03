@@ -10,6 +10,7 @@
          to_binary/1,
          to_integer/1,
          to_float/1,
+         to_float/2,
          to_term/1,
          module_exist/1,
          module_exists/1,
@@ -182,6 +183,21 @@ to_float(Value) when is_binary(Value) ->
   to_float(binary_to_list(Value));
 to_float(Value) when is_atom(Value) ->
   to_float(atom_to_list(Value)).
+
+% @doc
+% Convert the given term to float, with the given precision
+%
+% Example
+%<pre>
+% 123.457 = bucs:to_float(123.45678i, 3).
+% 123.457 = bucs:to_float("123.45678", 3).
+% 123.457 = bucs:to_float(&lt;&lt;"123.45678"&gt;&gt;, 3).
+% 123.457 = bucs:to_float('123.45678', 3).
+% 123.0 = bucs:to_float(123, 3).
+% </pre>
+% @end
+to_float(Value, Precision) ->
+  to_float(float_to_list(to_float(Value), [{decimals, Precision}])).
 
 % @doc
 % Convert the given value to term
