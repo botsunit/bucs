@@ -14,3 +14,20 @@
             end)())
         end).
 
+-define(assertCall(Module, Function, Arity, N),
+        begin
+          ((fun() ->
+                __N = (N),
+                case meck:num_calls(Module, Function, Arity) of
+                  __N -> ok;
+                  __V -> erlang:error({assertCall,
+                                       [{module, ?MODULE},
+                                        {line, ?LINE},
+                                        {expression, (??Module) ++ ":" ++ (??Function) ++ "/" ++ (??Arity)},
+                                        {expected, __N},
+                                        {value, __V}]})
+                end
+            end)())
+        end).
+
+-define(assertCall(Module, Function, N), ?assertCall(Module, Function, '_', N)).
