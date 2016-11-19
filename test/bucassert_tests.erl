@@ -13,7 +13,12 @@ bucassert_test_() ->
         ?assertContinueIfMatch({ok, X}, V, X,
                                fun(A) ->
                                    ?assertEqual(A, 1)
-                               end)
+                               end),
+        ?assertException(error, _,
+                         ?assertContinueIfMatch({ok, X}, V, X,
+                                                fun(A) ->
+                                                    ?assertEqual(A, 2)
+                                                end))
     end
    ]}.
 
@@ -38,6 +43,8 @@ bucassert_assert_call_test_() ->
         fake_module:function(1),
         fake_module:function(2, 2),
         ?assertCall(fake_module, function, 1, 3),
-        ?assertCall(fake_module, function, 4)
+        ?assertCall(fake_module, function, 4),
+        ?assertException(error, _, ?assertCall(fake_module, function, 5)),
+        ?assertException(error, _, ?assertCall(fake_module, function, 1, 5))
     end
    ]}.
