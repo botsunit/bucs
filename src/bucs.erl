@@ -4,6 +4,8 @@
 -include("../include/bucs.hrl").
 
 -export([
+         type/1,
+         is_type/2,
          to_atom/1,
          to_list/1,
          to_string/1,
@@ -35,6 +37,26 @@
          eval/1,
          eval/2
         ]).
+
+type(Data) when is_atom(Data) -> atom;
+type(Data) when is_list(Data) ->
+  case is_string(Data) of
+    true -> string;
+    false -> list
+  end;
+type(Data) when is_binary(Data) -> binary;
+type(Data) when is_float(Data) -> float;
+type(Data) when is_integer(Data) -> integer;
+type(Data) when is_pid(Data) -> pid;
+type(Data) when is_reference(Data) -> reference;
+type(Data) when is_port(Data) -> port;
+type(Data) when is_tuple(Data) -> tuple;
+type(Data) when is_map(Data) -> map;
+type(Data) when is_function(Data) -> function;
+type(Data) when is_boolean(Data) -> boolean;
+type(_) -> undefined.
+
+is_type(Data, Type) -> type(Data) == Type.
 
 % @doc
 % Convert the given term to atom
