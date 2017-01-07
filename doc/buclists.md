@@ -9,7 +9,7 @@
 ## Function Index ##
 
 
-<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete_if-2">delete_if/2</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-3">keyfind/3</a></td><td>Equivalent to <a href="#keyfind-4"><tt>keyfind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-5">keyfind/5</a></td><td></td></tr><tr><td valign="top"><a href="#keyufind-3">keyufind/3</a></td><td>Equivalent to <a href="#keyufind-4"><tt>keyufind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyufind-4">keyufind/4</a></td><td></td></tr><tr><td valign="top"><a href="#merge_keylists-3">merge_keylists/3</a></td><td>
+<table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#delete_if-2">delete_if/2</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-3">keyfind/3</a></td><td>Equivalent to <a href="#keyfind-4"><tt>keyfind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyfind-4">keyfind/4</a></td><td></td></tr><tr><td valign="top"><a href="#keyfind-5">keyfind/5</a></td><td></td></tr><tr><td valign="top"><a href="#keyufind-3">keyufind/3</a></td><td>Equivalent to <a href="#keyufind-4"><tt>keyufind(Key, N, TupleList, false)</tt></a>.</td></tr><tr><td valign="top"><a href="#keyufind-4">keyufind/4</a></td><td></td></tr><tr><td valign="top"><a href="#keyupdate-4">keyupdate/4</a></td><td></td></tr><tr><td valign="top"><a href="#merge_keylists-3">merge_keylists/3</a></td><td>
 Merge the two keylists.</td></tr><tr><td valign="top"><a href="#nsplit-2">nsplit/2</a></td><td> 
 Split the given list in N lists.</td></tr><tr><td valign="top"><a href="#pipemap-2">pipemap/2</a></td><td></td></tr><tr><td valign="top"><a href="#splitn-2">splitn/2</a></td><td> 
 Split the given list in multiples lists of maximum N elements.</td></tr></table>
@@ -70,6 +70,12 @@ Equivalent to [`keyufind(Key, N, TupleList, false)`](#keyufind-4).
 keyufind(Key::term(), N::integer(), TupleList::[tuple()], Default::term()) -&gt; term()
 </code></pre>
 <br />
+
+<a name="keyupdate-4"></a>
+
+### keyupdate/4 ###
+
+`keyupdate(Key, N, List, Tuple) -> any()`
 
 <a name="merge_keylists-3"></a>
 

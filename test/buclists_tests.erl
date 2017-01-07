@@ -11,6 +11,7 @@ buclists_test_() ->
     , ?_test(t_delete_if())
     , ?_test(t_splitn())
     , ?_test(t_nsplit())
+    , ?_test(t_keyupdate())
    ]}.
 
 setup() ->
@@ -42,4 +43,14 @@ t_splitn() ->
 t_nsplit() ->
   ?assertEqual([[a, b], [c, d], [e, f, g]],
                buclists:nsplit([a, b, c, d, e, f, g], 3)).
+
+t_keyupdate() ->
+  ?assertEqual([{key, value}],
+               buclists:keyupdate(key, 1, [], {key, value})),
+  ?assertEqual([{key, value}, {a, a}, {b, b}],
+               buclists:keyupdate(key, 1, [{a, a}, {b, b}], {key, value})),
+  ?assertEqual([{a, value}, {b, b}],
+               buclists:keyupdate(a, 1, [{a, a}, {b, b}], {a, value})),
+  ?assertEqual([{key, value}, {b, b}],
+               buclists:keyupdate(a, 1, [{a, a}, {b, b}], {key, value})).
 

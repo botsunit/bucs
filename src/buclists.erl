@@ -2,6 +2,7 @@
 
 -export([
          pipemap/2,
+         keyupdate/4,
          keyfind/3,
          keyfind/4,
          keyfind/5,
@@ -12,6 +13,14 @@
          splitn/2,
          nsplit/2
         ]).
+
+keyupdate(Key, N, List, Tuple) ->
+  case lists:keyfind(Key, N, List) of
+    false ->
+      [Tuple|List];
+    _ ->
+      lists:keyreplace(Key, N, List, Tuple)
+  end.
 
 % @doc
 % @end
