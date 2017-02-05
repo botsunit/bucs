@@ -25,7 +25,9 @@ __Authors:__ Grégoire Lejeune ([`gregoire.lejeune@botsunit.com`](mailto:gregoir
 
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#randstr-1">randstr/1</a></td><td> 
 Returns a random string of a given length, 
-that contains only letters (no diacritics) or digits.</td></tr></table>
+that contains only letters (no diacritics) or digits.</td></tr><tr><td valign="top"><a href="#randstr-2">randstr/2</a></td><td>
+Returns a random string of a given length,
+that contains only <tt>Allowed</tt> chars.</td></tr></table>
 
 
 <a name="functions"></a>
@@ -47,7 +49,7 @@ that contains only letters (no diacritics) or digits
 
 Param:
 
-* Length, the length of the string to generate
+* Length: the length of the string to generate
 
 Example:
 
@@ -55,5 +57,30 @@ Example:
 
  1> bucrandom:randstr(12).
  "ZL7YmS5HRQod"
+```
+
+<a name="randstr-2"></a>
+
+### randstr/2 ###
+
+<pre><code>
+randstr(Length::integer(), Allowed::list()) -&gt; string()
+</code></pre>
+<br />
+
+Returns a random string of a given length,
+that contains only `Allowed` chars.
+
+Param:
+
+* Length: the length of the string to generate 
+* Allowed: List of chars.
+
+Example:
+
+```erlang
+
+ 1> bucrandom:randstr(12, "01").
+ "010011010011"
 ```
 

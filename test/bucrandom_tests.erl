@@ -7,6 +7,7 @@ bucrandom_test_() ->
    fun setup/0, fun teardown/1,
    [
     ?_test(t_randstr_has_good_content()),
+    ?_test(t_randstr_has_good_content_with_allowed()),
     ?_test(t_randstr_has_good_length()),
     ?_test(t_randstr_is_good_random()),
     ?_test(t_empty_randstr_is_empty())
@@ -31,6 +32,12 @@ all_are_different([H|T]) ->
 t_randstr_has_good_content() ->
   LegalChars = "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890",
   RandomStr = bucrandom:randstr(1024),
+  LegalStr = [X || X <- RandomStr, lists:member(X, LegalChars)],
+  ?assertEqual(LegalStr, RandomStr).
+
+t_randstr_has_good_content_with_allowed() ->
+  LegalChars = "01",
+  RandomStr = bucrandom:randstr(1024, LegalChars),
   LegalStr = [X || X <- RandomStr, lists:member(X, LegalChars)],
   ?assertEqual(LegalStr, RandomStr).
 

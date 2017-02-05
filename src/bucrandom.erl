@@ -26,12 +26,13 @@
                         _ -> erlang:system_time(micro_seconds)
                       end
                     end).
+-define(CHARS, "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890").
 
 -export([start_link/0]).
 -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
          terminate/2, code_change/3]).
 
--export([randstr/1]).
+-export([randstr/1, randstr/2]).
 
 % @hidden
 start_link() ->
@@ -44,7 +45,7 @@ start_link() ->
 %
 % Param:
 %
-% * Length, the length of the string to generate
+% * Length: the length of the string to generate
 %
 % Example:
 %
@@ -55,8 +56,28 @@ start_link() ->
 % @end
 -spec randstr(Length::integer()) -> string().
 randstr(Length) ->
+  randstr(Length, ?CHARS).
+
+% @doc
+% Returns a random string of a given length,
+% that contains only <tt>Allowed</tt> chars.
+%
+% Param:
+%
+% * Length: the length of the string to generate
+% * Allowed: List of chars.
+%
+% Example:
+%
+% <pre lang="erlang">
+% 1> bucrandom:randstr(12, "01").
+% "010011010011"
+% </pre>
+% @end
+-spec randstr(Length::integer(), Allowed::list()) -> string().
+randstr(Length, Allowed) ->
   _ = ensure_started(),
-  gen_server:call(?SERVER, {randstr, Length}).
+  gen_server:call(?SERVER, {randstr, Length, Allowed}).
 
 % @hidden
 init(Args) ->
@@ -64,8 +85,8 @@ init(Args) ->
   {ok, Args}.
 
 % @hidden
-handle_call({randstr, Length}, _From, State) ->
-  {reply, private_randstr(Length), State};
+handle_call({randstr, Length, Allowed}, _From, State) ->
+  {reply, private_randstr(Length, Allowed), State};
 handle_call(_Request, _From, State) ->
   {reply, ok, State}.
 
@@ -87,10 +108,8 @@ code_change(_OldVsn, State, _Extra) ->
 
 % Service implementation
 
--define(CHARS, "azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890").
-
-private_randstr(Size) ->
-  lists:flatten([lists:sublist(?CHARS, erlang:apply(?RAND, uniform, [length(?CHARS)]), 1) || _ <- lists:seq(1, Size)]).
+private_randstr(Size, Allowed) ->
+  lists:flatten([lists:sublist(Allowed, erlang:apply(?RAND, uniform, [length(Allowed)]), 1) || _ <- lists:seq(1, Size)]).
 
 ensure_started() ->
   case [A || {A, _, _} <- application:which_applications(), A =:= bucs] of
