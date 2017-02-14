@@ -22,7 +22,7 @@ join a list of binaries with the given separator.</td></tr><tr><td valign="top">
 ### join/2 ###
 
 <pre><code>
-join(List::[binary()], Sep::binary()) -&gt; binary()
+join(L::[binary()], S::binary()) -&gt; binary()
 </code></pre>
 <br />
 

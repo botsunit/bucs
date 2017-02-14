@@ -19,18 +19,14 @@ join([], _) ->
   <<>>;
 join([Bin], _) when is_binary(Bin) ->
   Bin;
-join(List, Sep) when is_list(List), is_binary(Sep) ->
-  lists:foldr(fun
-                (<<>>, <<>>) -> <<>>;
-                (A, <<>>) -> A;
-                (<<>>, B) -> B;
-                (A, B) -> <<(bucs:to_binary(A))/binary,
-                            Sep/binary,
-                            (bucs:to_binary(B))/binary>>
-              end, <<>>, List);
-join(Bin, _) when is_binary(Bin) ->
-  Bin.
-
+join(L, S) when is_list(L), is_binary(S) ->
+  join(L, S, <<>>).
+join([], _, Acc) ->
+  Acc;
+join([E|R], S, <<>>) ->
+  join(R, S, E);
+join([E|R], S, Acc) ->
+  join(R, S, <<Acc/binary, S/binary, E/binary>>).
 
 - spec trim(binary(), left | right | both) -> binary().
 trim(Binary, left) ->
