@@ -19,7 +19,13 @@ teardown(_) ->
 t_join() ->
   ?assertEqual(<<"hello,world,i,love,you">>,
                bucbinary:join([<<"hello">>, <<"world">>, <<"i">>, <<"love">>, <<"you">>],
-                              <<",">>)).
+                              <<",">>)),
+  ?assertEqual(<<"hello world i love you">>,
+               bucbinary:join(["hello", world, <<"i">>, <<"love">>, <<"you">>],
+                              <<" ">>)),
+  ?assertEqual(<<"helloworldiloveyou">>,
+               bucbinary:join([<<"hello">>, <<"world">>, <<"i">>, <<"love">>, <<"you">>],
+                              <<>>)).
 
 t_trim() ->
   ?assertEqual(<<"hello world">>,

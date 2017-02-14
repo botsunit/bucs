@@ -17,16 +17,14 @@
 -spec join([binary()], binary()) -> binary().
 join([], _) ->
   <<>>;
-join([Bin], _) when is_binary(Bin) ->
-  Bin;
 join(L, S) when is_list(L), is_binary(S) ->
   join(L, S, <<>>).
 join([], _, Acc) ->
   Acc;
 join([E|R], S, <<>>) ->
-  join(R, S, E);
+  join(R, S, bucs:to_binary(E));
 join([E|R], S, Acc) ->
-  join(R, S, <<Acc/binary, S/binary, E/binary>>).
+  join(R, S, <<Acc/binary, S/binary, (bucs:to_binary(E))/binary>>).
 
 - spec trim(binary(), left | right | both) -> binary().
 trim(Binary, left) ->
