@@ -264,7 +264,10 @@ t_is() ->
   ?assertNot(bucs:is_kw_list("hello")),
   ?assertNot(bucs:is_kw_list([1, 2, 3])),
   ?assertNot(bucs:is_kw_list([{a, b}, {c, d}, {e, f, g}])),
-  ?assert(bucs:is_kw_list([{a, b}, {c, d}, {e, f}])).
+  ?assert(bucs:is_kw_list([{a, b}, {c, d}, {e, f}])),
+  ?assert(bucs:is_list_of_lists([[], [], []])),
+  ?assertNot(bucs:is_list_of_lists([a, b, c])),
+  ?assertNot(bucs:is_list_of_lists("hello")).
 
 t_convert_record() ->
   ?assertMatch([{bar, "baz"}, {camp, "spam"}], ?record_to_list(rec, #rec{})),

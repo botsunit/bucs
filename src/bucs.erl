@@ -24,6 +24,7 @@
          apply/3,
          apply/2,
          is_string/1,
+         is_list_of_lists/1,
          is_kw_list/1,
          compare_as_list/2,
          compare_as_string/2,
@@ -339,7 +340,7 @@ is_string(V) when is_list(V) ->
 is_string(_) -> false.
 
 % @doc
-% Wheck is the given value is a keyword list
+% Check if the given value is a keyword list
 % @end
 is_kw_list(V) when is_list(V) ->
   lists:all(fun
@@ -347,6 +348,15 @@ is_kw_list(V) when is_list(V) ->
               (_) -> false
             end, V);
 is_kw_list(_) -> false.
+
+% @doc
+% Check if the given value is a list of lists
+% @end
+is_list_of_lists(L) ->
+  is_list(L) andalso
+  lists:all(fun(E) ->
+                is_list(E)
+            end, L).
 
 % @doc
 % Return true if <tt>A</tt> match <tt>B</tt>. false otherwise.

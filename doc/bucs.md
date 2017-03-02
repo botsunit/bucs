@@ -12,7 +12,8 @@
 <table width="100%" border="1" cellspacing="0" cellpadding="2" summary="function index"><tr><td valign="top"><a href="#apply-2">apply/2</a></td><td></td></tr><tr><td valign="top"><a href="#apply-3">apply/3</a></td><td></td></tr><tr><td valign="top"><a href="#apply-4">apply/4</a></td><td></td></tr><tr><td valign="top"><a href="#as-2">as/2</a></td><td></td></tr><tr><td valign="top"><a href="#blank-1">blank/1</a></td><td></td></tr><tr><td valign="top"><a href="#call-3">call/3</a></td><td> 
 Returns the result of applying Function in Module to Args.</td></tr><tr><td valign="top"><a href="#compare_as_atom-2">compare_as_atom/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_binary-2">compare_as_binary/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_integer-2">compare_as_integer/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_list-2">compare_as_list/2</a></td><td></td></tr><tr><td valign="top"><a href="#compare_as_string-2">compare_as_string/2</a></td><td></td></tr><tr><td valign="top"><a href="#default_to-2">default_to/2</a></td><td></td></tr><tr><td valign="top"><a href="#eval-1">eval/1</a></td><td></td></tr><tr><td valign="top"><a href="#eval-2">eval/2</a></td><td></td></tr><tr><td valign="top"><a href="#function_exist-3">function_exist/3</a></td><td></td></tr><tr><td valign="top"><a href="#function_exists-3">function_exists/3</a></td><td>
 Check if the given function exist.</td></tr><tr><td valign="top"><a href="#is_kw_list-1">is_kw_list/1</a></td><td>
-Wheck is the given value is a keyword list.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
+Check if the given value is a keyword list.</td></tr><tr><td valign="top"><a href="#is_list_of_lists-1">is_list_of_lists/1</a></td><td>
+Check if the given value is a list of lists.</td></tr><tr><td valign="top"><a href="#is_string-1">is_string/1</a></td><td>
 Check if the given value is a string.</td></tr><tr><td valign="top"><a href="#is_type-2">is_type/2</a></td><td></td></tr><tr><td valign="top"><a href="#match-2">match/2</a></td><td>
 Return true if <tt>A</tt> match <tt>B</tt>.</td></tr><tr><td valign="top"><a href="#module_exist-1">module_exist/1</a></td><td></td></tr><tr><td valign="top"><a href="#module_exists-1">module_exists/1</a></td><td>
 Check if the given module exist.</td></tr><tr><td valign="top"><a href="#pipecall-1">pipecall/1</a></td><td> 
@@ -144,7 +145,15 @@ Check if the given function exist
 
 `is_kw_list(V) -> any()`
 
-Wheck is the given value is a keyword list
+Check if the given value is a keyword list
+
+<a name="is_list_of_lists-1"></a>
+
+### is_list_of_lists/1 ###
+
+`is_list_of_lists(L) -> any()`
+
+Check if the given value is a list of lists
 
 <a name="is_string-1"></a>
 
