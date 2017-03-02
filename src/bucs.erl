@@ -14,6 +14,8 @@
          to_float/1,
          to_float/2,
          to_term/1,
+         to/2,
+         as/2,
          module_exist/1,
          module_exists/1,
          function_exist/3,
@@ -37,6 +39,17 @@
          eval/1,
          eval/2
         ]).
+
+to(atom, Data) -> to_atom(Data);
+to(list, Data) -> to_list(Data);
+to(string, Data) -> to_string(Data);
+to(binary, Data) -> to_binary(Data);
+to(integer, Data) -> to_integer(Data);
+to(float, Data) -> to_float(Data);
+to(term, Data) -> to_term(Data);
+to(_, Data) -> Data.
+
+as(Type, Data) -> to(type(Type), Data).
 
 type(Data) when is_atom(Data) -> atom;
 type(Data) when is_list(Data) ->
