@@ -18,7 +18,9 @@
 join([], _) ->
   <<>>;
 join(L, S) when is_list(L), is_binary(S) ->
-  join(L, S, <<>>).
+  join(L, S, <<>>);
+join(B, _) when is_binary(B) ->
+  B.
 join([], _, Acc) ->
   Acc;
 join([E|R], S, <<>>) ->
