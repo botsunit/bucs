@@ -151,7 +151,7 @@ country(ipapi, IP) ->
           <<"country">>,
           <<"timezone">>);
 country(ipinfo, IP) ->
-  country("http://ipinfo.io/" ++ ip_to_string(IP),
+  country("http://ipinfo.io/" ++ ip_to_string(IP) ++ "/json",
           <<"country">>,
           <<"xxx">>,
           <<"xxx">>);
