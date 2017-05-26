@@ -70,7 +70,7 @@ t_country() ->
                bucinet:country("127.0.0.1")),
   ?assertEqual({ok, <<"US">>, <<"United States">>, <<"America/Los_Angeles">>},
                bucinet:country(freegeoip, "208.80.152.201")),
-  ?assertEqual({ok, <<"US">>, <<"United States">>, <<"America/Los_Angeles">>},
+  ?assertEqual({ok, <<"US">>, <<"United States">>, <<"America/New_York">>},
                bucinet:country(ipapi, "208.80.152.201")),
   ?assertEqual({ok, <<"US">>, undefined, undefined},
                bucinet:country(ipinfo, "208.80.152.201")),
