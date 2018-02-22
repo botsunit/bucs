@@ -229,7 +229,11 @@ t_parse_with_TZ() ->
   ?assertEqual({{2008, 8, 22}, {17, 16, 17}},
                bucdate:parse("Sat 22nd of August 2008 DST", ?DATE)),
   ?assertEqual({{2008, 8, 22}, {17, 16, 17, 0}},
-               bucdate:parse("2008-08-22T17:16:17.00000Z", ?DATE)).
+               bucdate:parse("2008-08-22T17:16:17.00000Z", ?DATE)),
+  ?assertEqual({{2008, 8, 22}, {18, 16, 17, 0}},
+               bucdate:parse("2008-08-22T17:16:17.00000+01:00", ?DATE)),
+  ?assertEqual({{2008, 8, 22}, {16, 16, 17, 0}},
+               bucdate:parse("2008-08-22T17:16:17.00000-01:00", ?DATE)).
 
 t_iso() ->
   ?assertEqual("2004 W53", bucdate:format(?ISO, {{2005, 1, 1}, {1, 1, 1}})),
