@@ -281,12 +281,12 @@ parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $-, Off | _Rest ], _Now, 
 parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms, $-, Off | _Rest ], _Now, _Opts)
   when  (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X))
         andalso Year > 31 ->
-    {{Year, Month, Day}, {hour(Hour, []) - Off, Min, Sec}, {Ms}};
+    {{Year, Month, Day}, {hour(Hour, []) + Off, Min, Sec}, {Ms}};
 
 parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms, $+, Off | _Rest ], _Now, _Opts)
   when  (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X))
         andalso Year > 31 ->
-    {{Year, Month, Day}, {hour(Hour, []) + Off, Min, Sec}, {Ms}};
+    {{Year, Month, Day}, {hour(Hour, []) - Off, Min, Sec}, {Ms}};
 
 %% Date/Times 22 Aug 2008 6:35.0001 PM
 parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms | PAM], _Now, _Opts)
