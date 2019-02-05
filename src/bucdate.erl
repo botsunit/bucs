@@ -278,12 +278,25 @@ parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $-, Off | _Rest ], _Now, 
         andalso Year > 31 ->
     {{Year, Month, Day}, {hour(Hour, []) + Off, Min, Sec}, {0}};
 
+parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms, $-, Off | _Rest ], _Now, _Opts)
+  when  (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X))
+        andalso Year > 31 ->
+    {{Year, Month, Day}, {hour(Hour, []) + Off, Min, Sec}, {Ms}};
+
+parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms, $+, Off | _Rest ], _Now, _Opts)
+  when  (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X))
+        andalso Year > 31 ->
+    {{Year, Month, Day}, {hour(Hour, []) - Off, Min, Sec}, {Ms}};
+
 %% Date/Times 22 Aug 2008 6:35.0001 PM
 parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms | PAM], _Now, _Opts)
   when ?IS_MERIDIAN(PAM) andalso
        (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X))
        andalso ?IS_YEAR(Year) ->
     {{Year, Month, Day}, {hour(Hour, PAM), Min, Sec}, {Ms}};
+parse([Year, X, Month, X, Day, Hour, $:, Min, $:, Sec, $., Ms , $Z], _Now, _Opts)
+  when (?IS_US_SEP(X) orelse ?IS_WORLD_SEP(X)) andalso ?IS_YEAR(Year) ->
+    {{Year, Month, Day}, {hour(Hour, []), Min, Sec}, {Ms}};
 parse([Month, X, Day, X, Year, Hour, $:, Min, $:, Sec, $., Ms | PAM], _Now, _Opts)
   when ?IS_MERIDIAN(PAM) andalso ?IS_US_SEP(X)
        andalso ?IS_YEAR(Year) ->
